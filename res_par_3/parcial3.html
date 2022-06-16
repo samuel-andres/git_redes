@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>parcial3.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<ul>
+<li><a href="#aspectos-generales-l3">Aspectos Generales L3</a>
+<ul>
+<li><a href="#modelos-de-servicios-de-red">Modelos de servicios de red</a>
+<ul>
+<li><a href="#cons-connection-oriented-network-service--modelo-direccionamiento-de-circuito-virtual">CONS: Connection Oriented Network Service | Modelo direccionamiento de Circuito Virtual</a></li>
+<li><a href="#clns-connectionless-network-service--modelo-de-direccionamiento-de-datagramas">CLNS: ConnectionLess Network Service | Modelo de direccionamiento de datagramas</a></li>
+</ul>
+</li>
+<li><a href="#funciones-del-nivel-de-red">Funciones del nivel de Red</a></li>
+</ul>
+</li>
+<li><a href="#tiempos-de-servicio">Tiempos de servicio</a>
+<ul>
+<li><a href="#propiedades-del-tiempo-de-servicio">Propiedades del tiempo de servicio</a></li>
+<li><a href="#dise%C3%B1o-de-capacidad-de-una-red">Diseño de capacidad de una red</a></li>
+</ul>
+</li>
+<li><a href="#protocolo-de-internet">Protocolo de Internet</a>
+<ul>
+<li><a href="#interconexi%C3%B3n-entre-redes">Interconexión entre redes</a>
+<ul>
+<li><a href="#necesidad-del-nivel-de-red">Necesidad del nivel de red</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="aspectos-generales-l3">Aspectos Generales L3</h1>
+<ul>
+<li>La capa de red es la capa que se encarga del direccionamiento de los paquetes a través de los diferentes caminos que forman la Internet.</li>
+<li>Su función principal es el direccionamiento.</li>
+<li>Se constituye con enlaces que interconectan dos tipos de nodos:
+<ul>
+<li>Hosts</li>
+<li>Routers</li>
+</ul>
+</li>
+<li>Los routers tienen varias interfaces y los hosts (generalmente) una.</li>
+<li>Cuando se comunican dos hosts en una misma LAN, la capa 3 es casi inexistente.</li>
+<li>De esto se encargan los conmutadores de capa 2, puentes o L2 switches.</li>
+<li>Cuando un hosts quiere comunicarse con otro, en el transcurso del paquete por la red la cabecera de capa 2 cambiará cada vez que llegue a un nodo (exceptuando los conmutadores, que solo revisan la cabecera de capa 2 y en base a esto toman la decisión de reenvío de la trama), ahora, en capa 3, cada que el paquete pase por un Router, el mismo revisará la cabecera de capa 3 y en base a la información contenida en la misma decidirá que hacer con el paquete, si descartarlo o redireccionarlo hacia alguna de sus interfaces basado en la información almacenada en su tabla de enrutamiento. Esto es, la dirección IP origen y destino de un paquete NO cambia en el transcurso del paquete desde su origen hacia su destino.</li>
+<li>ARP es un protocolo de capa 3.</li>
+<li>IP es un protocolo enrutado (routed) de capa 3.</li>
+<li>RIP, EIGRP, IGRP, OSPF, IS-IS, BGP son protocolos (dinámicos) de enrutamiento (routing protocols) de capa 3.</li>
+<li>IP es un protocolo enrutado de capa 3 NO ORIENTADO A CONEXIÓN.</li>
+<li>Los protocolos no orientados a conexión funcionan con datagramas, se toman decisiones de direccionamiento cada vez que un paquete llega a un Router.</li>
+<li>Los protocolos orientados a conexión establecen una conexión cada vez que se va a iniciar una transmisión, toman las decisiones de direccionamiento una sola vez y una vez establecida la conexión no se vuelven a tomar decisiones de direccionamiento, funcionan con PVC’s, o permanente virtual circuits, circuitos virtuales.</li>
+<li>El funcionamiento de los protocolos de capa 3 enrutados orientados a conexión es casi igual que el de los protocolos orientados a conexión de capa 2 como Frame relay o ATM.</li>
+<li>Actualmente se utiliza (casi) siempre protocolos de capa 3 no orientados a conexión, y el predominante es el protocolo de Internet, (IP; Internet Protocol)</li>
+<li>El hecho de que IP sea no orientado a conexión significa que tienen una máxima del mayor esfuerzo, los paqutes pueden llegar desordenados o perderse en el camino y quien se encargará de controlar esto es la capa superior (si es que se utiliza un protocolo de capa 4 orientado a conexión como lo es TCP)</li>
+<li>Los servicios de transmisión son 3:
+<ul>
+<li>Prioridad; ej.: mensajes de control</li>
+<li>QoS (Calidad de servicio); umbral de retardo máximo o umbral de requerimiento mínimo</li>
+<li>Seguridad; restricción de accesos</li>
+</ul>
+</li>
+<li>El protocolo IP busca no agregar demasiada información redundante a los paquetes, reduce el overhead.</li>
+</ul>
+<h2 id="modelos-de-servicios-de-red">Modelos de servicios de red</h2>
+<p>Un modelo de servicio de red define las características del transporte terminal a terminal. Esto es, si la entrega es garantizada o no, si se garantiza el retardo mínimo o no, si los paquetes se entregan en orden, cual es el ancho de banda mínimo garantizado y cuales son los servicios de seguridad que ofrece.</p>
+<p>En la realidad, en el Internet se utiliza el protocolo IP que hace uso del servicio del mejor esfuerzo.</p>
+<h3 id="cons-connection-oriented-network-service--modelo-direccionamiento-de-circuito-virtual">CONS: Connection Oriented Network Service | Modelo direccionamiento de Circuito Virtual</h3>
+<p>Se establece una conexión antes de iniciar la transmisión. Ej.: modelo de direccionamiento de circuito virtual.</p>
+<p>En este modelo cada VC consta de una ruta, números de vc y entradas en las tablas de reenvío de los routers.</p>
+<p>En la conexión, la capa de red define la ruta entre el emisor y el receptor, el número de VC para cada ruta del enlace, añade una entrada a la tabla de reenvío de los routers y puede reservar recursos.</p>
+<p><img src="./CONS_Data_Flow.png" alt="CONS, Data Flow"></p>
+<p>Ejemplo:</p>
+<p><img src="./CONS_Example.png" alt="CONS, Example"></p>
+<p>Cabe destacar que esto no es lo mismo que una red de circuitos, sigue siendo una red conmutada pero con circuitos virtuales, la diferencia con una red conmutada es que no existe reserva de recursos, el circuito es virtual, esto es, en torno a la toma de decisiones de direccionamiento y no de reserva de un canal físico.</p>
+<h3 id="clns-connectionless-network-service--modelo-de-direccionamiento-de-datagramas">CLNS: ConnectionLess Network Service | Modelo de direccionamiento de datagramas</h3>
+<p>Este es el modelo utilizado en la realidad, no garantiza la entrega de los paquetes en orden, ni la entrega en sí misma, el mejor esfuerzo hace referencia a que se intenta hacer lo mejor posible por llevar el paquete desde el origen hasta el destino pero no se asegura nada, esta responsabilidad se delega sobre las capas superiores (generalmente la capa de transporte cuando se utiliza el protocolo de capa 4 TCP que es orientado a conexión y es quien se encargará de establecer la conexión lógica en una comunicación entre dos estaciones.</p>
+<p>Un servicio CLNS es recomendable cuando la red es poco fiable, por el hecho de que si falla un Router en el camino de un paquete hacia su destino, el mismo podrá tomar otra dirección.</p>
+<p>Por el contrario si se utiliza un servicio CONS y falla un Router el paquete no podrá llegar a su destino, por lo que son utilizados cuando la red es muy fiable, como pasa en las redes de telefonía, donde por el contrario, en la capa superior se utiliza un protocolo no orientado a conexión como lo es el UDP.</p>
+<p>Algunas de las diferencias de el modelo de direccionamiento de datagramas con respecto al modelo de direccionamiento por circuitos virtuales son las siguientes:</p>
+<ul>
+<li>Cuando una estación quiere enviar un paquete le agrega dirección de origen y destino (dirección IP)</li>
+<li>No se realiza configuración de circuito virtual previa.</li>
+<li>Los routers no mantienen información de estado.</li>
+<li>Cada Router tiene una tabla de reenvío donde asigna direcciones de destino a interfaces de enlace para saber sobre que interfaz debe redireccionar un paquete que se destina a una red determinada.</li>
+<li>Se utiliza un prefijo de red que es la parte de la dirección IP que determina la dirección de red.</li>
+</ul>
+<p><img src="./CONSvsCLNS.png" alt="CONSvsCLNS, IMG "></p>
+<h2 id="funciones-del-nivel-de-red">Funciones del nivel de Red</h2>
+<ul>
+<li>Elegir la ruta óptima de los paqutes.
+<ul>
+<li>En CONS solo al momento de establecer el VC.</li>
+<li>En CLNS cada vez que un paquete llega a un Router.</li>
+</ul>
+</li>
+<li>Controlar y evitar la congestión. (NC); Criterios de descarte de paquetes.</li>
+<li>Controlar que el usuario no abuse del servicio (QoS)</li>
+<li>Resolver las direcciones del nivel de red con las del nivel de enlace (ARP)</li>
+</ul>
+<h1 id="tiempos-de-servicio">Tiempos de servicio</h1>
+<p>Para entender los tiempos de servicio primero hay que entender los tiempos utilizados en la transmisión de datos:</p>
+<ul>
+<li>Tiempo de transmisión (Tt): es el tiempo que tarde un paquete en ser emitido por una interfaz. Se calcula en base al tamaño del paquete (p; en bits) sobre la velocidad de la línea (v;bw – bits/s)</li>
+<li>Tiempo de propagación (t): es el tiempo que tarda un bit en viajar desde la interfaz de origen a la de destino. Depende del medio, esto es, distancia (longitud del cable si es patch cord o fibra óptica) y tipo (cobre, fibra o aire).</li>
+<li>Tiempo de entrega o latencia (Te): es la suma del tiempo de transmisión y el de propagación.</li>
+<li>Tiempo de espera (Tesp): es el tiempo que el paquete espera haciendo cola en la interfaz de entrada del Router hasta que le llega su turno. El tiempo de espera depende del grado de congestión en la interfaz de salida.</li>
+</ul>
+<p>Entonces:</p>
+<ul>
+<li>Tiempo de servicio (Ts = Tesp + Tt): es el tiempo que transcurre desde que el paquete llega por la interfaz de entrada (se pone en cola) hasta que se emite por la interfaz de salida. No incluye el tiempo de propagación.</li>
+<li>Por teoría de colas puede demostrarse que:
+<ul>
+<li>Ts = p/(v-c)</li>
+<li>P = tamaño del paquete (en bits)</li>
+<li>Siendo v = velocidad nominal o capacidad de la línea en bits/s.</li>
+<li>y c = tráfico real de la línea en bits/s.</li>
+</ul>
+</li>
+<li>Esto es, si un paqute de 500 bytes entra en una línea de 64Kb/s que esta ocupada en un 50%:
+<ul>
+<li>p = 4000, v = 64000, c = 32000  Ts = 125ms</li>
+</ul>
+</li>
+</ul>
+<h2 id="propiedades-del-tiempo-de-servicio">Propiedades del tiempo de servicio</h2>
+<p>Ts = p/(v-c)  Tt = p/v
+• Si c = 0, es decir que la línea no tiene tráfico, entonces el tiempo de transmisión es igual al tiempo de servicio.
+• Cuando la velocidad de una línea  es elevada podemos llegar a niveles altos de ocupación sin incurrir en tiempos de servicio excesivos.</p>
+<p><img src="./ts_cong.png" alt="ts_cong"></p>
+<h2 id="dise%C3%B1o-de-capacidad-de-una-red">Diseño de capacidad de una red</h2>
+<p>Desde un punto de vista de optimizar recursos lo ideal es que los enlaces tengan un nivel de congestión moderada. Una congestión excesiva provoca la pérdida y reenvío de paquetes, el fallo de protocolos de alto nivel y la frustración de los usuarios.</p>
+<p>La ausencia de congestión indica un sobredimensionamiento, lo cual podría significar un derroche de recursos. Hay que tener en cuenta las necesidades y la evolución de tráfico al o largo del día, lo razonable es dimensionar tomando en cuenta las necesidades en horas punta.</p>
+<h1 id="protocolo-de-internet">Protocolo de Internet</h1>
+<p>En el modelo de Internet, el principal protocolo de red es el Protocolo de Internet (IP). La versión actual y dominante es la versión 4 o IPv4, la siguiente generación es IPv6 que no se implementa mucho en la actualidad.</p>
+<h2 id="interconexi%C3%B3n-entre-redes">Interconexión entre redes</h2>
+<p>Los niveles físico y de enlace de datos de una red funcionan localmente. Estos dos niveles se responsabilizan de la entrega de datos en la red de un nodo al siguiente, como se muestra en la siguiente figura:</p>
+<p><img src="./no_l3.png" alt="no_l3"></p>
+<p>Esta interconexión entre redes se hace a partir de cinco redes: cuatro LAN y una WAN. Si el host A necesita enviar un paquete de datos al host D, el paquete necesita ir primero de A a R1 (un conmutador o encaminador), luego de R1 a R3, y finalmente de R3 al host D.</p>
+<p>Se dice que el paquete de datos pasa a través de tres enlaces. En cada enlace, se involucran dos niveles físicos y dos niveles de enlace de datos.</p>
+<p>Sin embargo, hay un gran problema. Cuando llegan datos a la interfaz f1 de R1, ¿Cómo sabe R1 que la interfaz de salida es f3? No hay nada en el nivel de enlace de datos (o físico) para ayudar a R1 a tomar la decisión adecuada. La trama no transporta ninguna información de encaminamiento. La trama contiene la dirección MAC de A como fuente y la dirección MAC de R1 como destino. Para una LAN o una WAN, la entrega significa transportar la trama a través de un enlace y no más allá.</p>
+<h3 id="necesidad-del-nivel-de-red">Necesidad del nivel de red</h3>
+<p>Para solucionar el problema de la entrega a través de varios enlaces, se ha diseñado el nivel de red (o el nivel de interconexión entre redes). <mark><strong>El nivel de red es responsable de la entrega host a host y del encaminamiento de los paquetes a través de los encaminadores o conmutadores.</strong></mark></p>
+<p>La siguiente figura muestra la misma red anterior pero con un nivel de red añadido:</p>
+<p><img src="./w_l3.png" alt="w_l3"></p>
+<p>La siguiente figura muestra la idea general de la funcionalidad del nivel de red en el origen, en el encaminador y en el destino.</p>
+<p><img src="./gen_id_l3.png" alt="gen_id_l3"></p>
+<p>El nivel de red en el origen es responsable de crear un paquete a partir de los datos que vienen de otro protocolo (como el protocolo de transporte o un protocolo de encaminamiento). La cabecera del paquete contiene, entre otra información, las direcciones lógicas del origen y del destino. El nivel de red es responsable de comprobar su tabla de encaminamiento para encontrar la información de encaminamiento (tales como la interfaz de salida o la dirección física del siguiente nodo). Si el paquete es demasiado grande se fragmenta.</p>
+<p>El nivel de red en el Router es responsable de encaminar el paquete. Cuando llega un paquete, el Router consulta su tabla de enrutamiento y encuentra la interfaz por la que el paquete debe ser enviado. El paquete, después de algunos cambios en la cabecera, se pasa de nuevo al nivel de enlace de datos con la información de encaminamiento. Cabe destacar que estos cambios en la cabecera no implican cambios en los campos de direcciones.</p>
+<p>El nivel de red en el destino es responsable de la verificación de la dirección; se asegura que la dirección de destino del paquete es la misma que la dirección de red del host.  Si el paquete es un fragmento, el nivel de red espera hasta que todos los fragmentos han llegado y los reensambla y entrega los paquetes reensamblados al nivel de transporte.</p>
+<pre><code class="language-mermaid"><div class="mermaid">classDiagram
+
+class Pedido {
+    items: list[str]
+    cantidades: list[int]
+    precios: list[float]
+    estado: str
+    total: int
+
+    agregar_item()
+    precio_total()
+}
+
+class ProcesadorDePagos {
+  <<Interface>>
+  -pagar(pedido)
+}
+
+class ProcesadorDePagosConDebito {
+    codigo_seg: str
+    autorizador: Autorizador
+    pagar(pedido)
+    autorizar_SMS(codigo_seg)
+}
+
+class ProcesadorDePagosConCredito {
+    codigo_seg: str
+    pagar(pedido)
+}
+
+class ProcesadorDePagosConBitcoin {
+    num_bv: str
+    autorizador: Autorizador
+
+    pagar(pedido,crypto)
+}
+
+ProcesadorDePagos ..> Pedido
+ProcesadorDePagosConBitcoin ..|> ProcesadorDePagos
+ProcesadorDePagosConDebito ..|> ProcesadorDePagos
+ProcesadorDePagosConCredito ..|> ProcesadorDePagos
+</div></code></pre>
+
+</body>
+</html>

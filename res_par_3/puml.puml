@@ -1,0 +1,69 @@
+```plantuml
+@startuml DependencyInversion
+skinparam roundcorner 20
+
+class Pedido {
+    items: list[str]
+    cantidades: list[int]
+    precios: list[float]
+    estado: str
+    total: int
+
+    agregar_item()
+    precio_total()
+}
+
+interface ProcesadorDePagos {
+    pagar(pedido)
+}
+
+class ProcesadorDePagosConDebito {
+    codigo_seg: str
+    autorizador: Autorizador
+    pagar(pedido)
+    autorizar_SMS(codigo_seg)
+}
+
+class ProcesadorDePagosConCredito {
+    codigo_seg: str
+    pagar(pedido)
+}
+
+class ProcesadorDePagosConBitcoin {
+    num_bv: str
+    autorizador: Autorizador
+
+    pagar(pedido,crypto)
+}
+
+interface Autorizador {
+    esAutorizado()
+}
+
+class AutorizadorDePagosSMS {
+    autorizado: bool
+
+    verificar_codigo(codigo)
+    esAutorizado()
+}
+
+class AutorizadorDeCaptcha {
+    autorizado: bool
+    
+    verificar_captcha()
+    esAutorizado()
+}
+ProcesadorDePagos ..> Pedido
+ProcesadorDePagosConDebito ..|> ProcesadorDePagos
+ProcesadorDePagosConCredito ..|> ProcesadorDePagos
+ProcesadorDePagosConBitcoin ..|> ProcesadorDePagos
+
+ProcesadorDePagosConDebito "1" -u-> "1" Autorizador
+ProcesadorDePagosConCredito "1" -u-> "1" Autorizador
+ProcesadorDePagosConBitcoin "1" -u-> "1" Autorizador
+
+
+AutorizadorDeCaptcha ..|> Autorizador
+AutorizadorDePagosSMS ..|> Autorizador
+@enduml
+```
