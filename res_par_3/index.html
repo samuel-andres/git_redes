@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>parcial3.md</title>
+<title>index.md</title>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 
 <style>
@@ -365,13 +365,22 @@ code {
           : 'default'
     });
   </script>
+<h5 id="marksamucamark"><mark><em><strong>samuca</strong></em></mark></h5>
+<h1 id="%C3%ADndice">Índice</h1>
 <ul>
+<li><a href="#%C3%ADndice">Índice</a></li>
 <li><a href="#aspectos-generales-l3">Aspectos Generales L3</a>
 <ul>
 <li><a href="#modelos-de-servicios-de-red">Modelos de servicios de red</a>
 <ul>
 <li><a href="#cons-connection-oriented-network-service--modelo-direccionamiento-de-circuito-virtual">CONS: Connection Oriented Network Service | Modelo direccionamiento de Circuito Virtual</a></li>
 <li><a href="#clns-connectionless-network-service--modelo-de-direccionamiento-de-datagramas">CLNS: ConnectionLess Network Service | Modelo de direccionamiento de datagramas</a></li>
+</ul>
+</li>
+<li><a href="#clns-forouzan">CLNS Forouzan</a>
+<ul>
+<li><a href="#internet-como-una-red-de-datagramas">Internet como una red de datagramas</a></li>
+<li><a href="#internet-como-una-red-no-orientada-a-conexi%C3%B3n">Internet como una red no orientada a conexión</a></li>
 </ul>
 </li>
 <li><a href="#funciones-del-nivel-de-red">Funciones del nivel de Red</a></li>
@@ -388,6 +397,21 @@ code {
 <li><a href="#interconexi%C3%B3n-entre-redes">Interconexión entre redes</a>
 <ul>
 <li><a href="#necesidad-del-nivel-de-red">Necesidad del nivel de red</a></li>
+</ul>
+</li>
+<li><a href="#ipv4">IPv4</a>
+<ul>
+<li><a href="#datagrama">Datagrama</a>
+<ul>
+<li><a href="#fragmentaci%C3%B3n">Fragmentación</a>
+<ul>
+<li><a href="#unidad-de-transferencia-m%C3%A1xima-mtu">Unidad de transferencia máxima (MTU)</a></li>
+<li><a href="#campos-relacionados-con-la-fragmentaci%C3%B3n">Campos relacionados con la fragmentación</a></li>
+</ul>
+</li>
+<li><a href="#opciones">Opciones</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -448,6 +472,15 @@ code {
 <li>Cada Router tiene una tabla de reenvío donde asigna direcciones de destino a interfaces de enlace para saber sobre que interfaz debe redireccionar un paquete que se destina a una red determinada.</li>
 <li>Se utiliza un prefijo de red que es la parte de la dirección IP que determina la dirección de red.</li>
 </ul>
+<h2 id="clns-forouzan">CLNS Forouzan</h2>
+<h3 id="internet-como-una-red-de-datagramas">Internet como una red de datagramas</h3>
+<p>En Internet, el nivel de enlace de red es una red de conmutación de paquetes. En general, la conmutación se puede dividir en tres amplias categorías: conmutación de circuitos, conmutación de paquetes y conmutación de mensajes. La conmutación de paquetes utiliza circuitos virtuales o datagramas.</p>
+<p>En internet se ha elegido el enfoque basado en datagramas para la conmutación en el nivel de red. Utiliza una dirección universal definida en el nivel de red para encaminar paquetes del origen al destino.</p>
+<h3 id="internet-como-una-red-no-orientada-a-conexi%C3%B3n">Internet como una red no orientada a conexión</h3>
+<p>La entrega de un paquete se puede realizar utilizando un servicio de red orientado a conexión o uno no orientado a conexión. En un servicio orientado a conexión, el origen establece en primer lugar una conexión con el destino antes de enviar el paquete. Cuando la conexión se establece, se puede enviar una secuencia de paquete s del mismo origen al mismo destino. En este caso, hay una relación entre los paquetes. Se envían por el mismo camino en orden secuencial. Un paquete se encuentra conectado lógicamente con el paquete que viaja delante de él y con el que viaja detrás de el. Cuando se han entregado todos los paquetes de un mensaje, se finaliza la conexión.</p>
+<p>En un protocolo orientado a conexión, la decisión sobre el camino de una secuencia de paquetes con la misma dirección origen y destino se puede hacer una sola vez, cuando se establece la conexión. Los conmutadores no recalculan el camino para cada paquete individual. Este tipo de servicio utiliza el enfoque de circuitos virtuales para la conmutación de paquetes, como Frame Relay y ATM.</p>
+<p>En un servicio no orientado a conexión, el protocolo de nivel de red trata cada paquete de forma independiente y los paquetes no tienen relación entre ellos. Los paquetes de un mensaje pueden viajar o no por el mismo camino hasta el destino. Este tipo de servicio utiliza el enfoque basado en datagramas para la conmutación de paquetes. En Internet se ha elegido este tipo de servicio en el nivel de red.</p>
+<p>La razón de esta decisión es que Internet está compuesto de tantas redes heterogéneas que casi siempre es imposible crear una conexión desde un origen a un destino sin conocer por adelantado la naturaleza de las redes.</p>
 <p><img src="./CONSvsCLNS.png" alt="CONSvsCLNS, IMG "></p>
 <h2 id="funciones-del-nivel-de-red">Funciones del nivel de Red</h2>
 <ul>
@@ -511,48 +544,115 @@ code {
 <p>El nivel de red en el origen es responsable de crear un paquete a partir de los datos que vienen de otro protocolo (como el protocolo de transporte o un protocolo de encaminamiento). La cabecera del paquete contiene, entre otra información, las direcciones lógicas del origen y del destino. El nivel de red es responsable de comprobar su tabla de encaminamiento para encontrar la información de encaminamiento (tales como la interfaz de salida o la dirección física del siguiente nodo). Si el paquete es demasiado grande se fragmenta.</p>
 <p>El nivel de red en el Router es responsable de encaminar el paquete. Cuando llega un paquete, el Router consulta su tabla de enrutamiento y encuentra la interfaz por la que el paquete debe ser enviado. El paquete, después de algunos cambios en la cabecera, se pasa de nuevo al nivel de enlace de datos con la información de encaminamiento. Cabe destacar que estos cambios en la cabecera no implican cambios en los campos de direcciones.</p>
 <p>El nivel de red en el destino es responsable de la verificación de la dirección; se asegura que la dirección de destino del paquete es la misma que la dirección de red del host.  Si el paquete es un fragmento, el nivel de red espera hasta que todos los fragmentos han llegado y los reensambla y entrega los paquetes reensamblados al nivel de transporte.</p>
-<pre><code class="language-mermaid"><div class="mermaid">classDiagram
-
-class Pedido {
-    items: list[str]
-    cantidades: list[int]
-    precios: list[float]
-    estado: str
-    total: int
-
-    agregar_item()
-    precio_total()
-}
-
-class ProcesadorDePagos {
-  <<Interface>>
-  -pagar(pedido)
-}
-
-class ProcesadorDePagosConDebito {
-    codigo_seg: str
-    autorizador: Autorizador
-    pagar(pedido)
-    autorizar_SMS(codigo_seg)
-}
-
-class ProcesadorDePagosConCredito {
-    codigo_seg: str
-    pagar(pedido)
-}
-
-class ProcesadorDePagosConBitcoin {
-    num_bv: str
-    autorizador: Autorizador
-
-    pagar(pedido,crypto)
-}
-
-ProcesadorDePagos ..> Pedido
-ProcesadorDePagosConBitcoin ..|> ProcesadorDePagos
-ProcesadorDePagosConDebito ..|> ProcesadorDePagos
-ProcesadorDePagosConCredito ..|> ProcesadorDePagos
-</div></code></pre>
+<h2 id="ipv4">IPv4</h2>
+<p>La versión 4 del protocolo de Internet(IPv4) es un mecanismo de entrega utilizado en los protocolos TCP/IP. La siguiente figura muestra la posición de IPv4 en esta familia de protocolos.</p>
+<p><img src="./ipv4_fam.png" alt="ipv4_fam"></p>
+<p>IPv4 es un protocolo de datagramas no orientado a conexión y no fiable, utiliza un servicio de mejor entrega posible. El término <em>mejor posible</em> significa que IPv4 no ofrece control de errores ni control de flujo (sólo para la detección de errores en la cabecera). IPv4 asume la no fiabilidad de los niveles inferiores y hace lo mejor que puede para conseguir la transmisión al destino pero sin garantías.</p>
+<p>Si la fiabilidad es importante, IPv4 debe emparejarse con un protocolo fiable como TCP.</p>
+<p>IPv4 es también un protocolo no orientado a conexión para una red de conmutación de paquetes que utiliza datagramas. Esto significa que cada datagrama se trata de forma independiente y cada datagrama puede seguir un camino diferente hasta el destino. Esto implica que los datagramas enviados por el mismo origen al mismo destino pueden llegar desordenados. También, algunos pueden perderse o dañarse durante la transmisión. De nuevo, IPv4 depende de un protocolo de nivel superior que se preocupe de estos problemas.</p>
+<h3 id="datagrama">Datagrama</h3>
+<p>Los paquetes en IPv4 se denominan datagramas.</p>
+<p>Un datagrama es un paquete de longitud variable que consta de dos partes: cabecera y datos. La cabecera tiene de 20 a 60 bytes de longitud y contiene información esencial para el encaminamiento y la entrega. En TCP/IP se muestra la cebecera en secciones de 4 bytes.</p>
+<p>A continuación se hace una descripción de cada campo en orden.</p>
+<p><img src="./datagrama_format.png" alt="datagrama_format"></p>
+<ul>
+<li>
+<p>Versión (VER): Este campo de 4 bits define la versión del protocolo IP. Actualmente la versión es la 4. Si se utiliza IPv6 este campo indica que se utiliza IPv6. Si se utiliza IPv4 este campo indica que todos los campos a continuación deben interpretarse de acuerdo a esta versión.</p>
+</li>
+<li>
+<p>Longitud de la cabecera (HLEN): Este campo de 4 bits define la longitud total de la cabecera del datagrama en palabras de 4 bytes. Este campo es necesario debido a que la longitud de la cabecera es variable (entre 20 y 60 bytes). Cuando no hay opciones, la cabecera tiene 20 bytes y el valor de este campo es 5. Cuando el campo opción está presente su tamaño es 15.</p>
+</li>
+<li>
+<p>Servicios: El IEFT cambió la interpretación y el nombre de este campo de 8 bits. Este campo, anteriormente denominado &quot;tipo de servicio&quot;, se conoce ahora como &quot;servicios diferenciados&quot;.</p>
+<ol>
+<li>Tipo de servicio</li>
+</ol>
+<blockquote>
+<p>En esta interpretación, los 3 primeros bits se denominan bits de precedencia. Los siguientes 4 bits se denominan tipo de servicio (TOS) y el último no se utiliza</p>
+</blockquote>
+<ul>
+<li>Precedencia</li>
+</ul>
+<blockquote>
+<p>Es un subcampo de 3 bits con valores entre 0 y 7 (dec). La precedencia define la <strong>prioridad</strong> del datagrama en situaciones tales como congestión. Si un encaminador se encuentra congestionado y necesita descartar algunos datagramas, se descartarán primero aquellos con menor precedencia. Algunos datagramas en Internet son más importantes que otros. (Es el equivalente al DEI en las tramas Ethernet con dot1q tags)</p>
+</blockquote>
+<ul>
+<li>Bit TOS</li>
+</ul>
+<blockquote>
+<p>En este campo de 4 bits, cada bit tiene un significado especial. Aunque un bit puede ser 0 o 1, uno y sólo uno de estos bits puede tener el valor 1 en cada datagrama. Los patrones de bits y su interpretación se muestran en la siguiente tabla. Con sólo 1 bit a 1 al mismo tiempo se pueden tener cinco tipos diferentes de servicios.<img src="./TOS_1.png" alt="TOS"><br>
+Los programas de aplicación pueden solicitar un tipo específico de servicio:
+<img src="./TOS_PD.png" alt="TOS_PD"></p>
+</blockquote>
+<ol start="2">
+<li>Servicios diferenciados</li>
+</ol>
+<blockquote>
+<p>En esta interpretación, los primeros 6 bits constituyen un subcampo denominado codepoint, y los últimos 12 bits no se utilizan. El subcampo codepoint se puede utilizar de dos formas.</p>
+</blockquote>
+<ul>
+<li>a</li>
+</ul>
+<blockquote>
+<p>Cuando los 3 bits de la derecha son 0, los 3 bits de la izquierda se interpretan igual forma que los bits de precedencia en la interpretación de TOS. En otras palabras, es compatible con la vieja interpretación.</p>
+</blockquote>
+<ul>
+<li>b</li>
+</ul>
+<blockquote>
+<p>Cuando los 3 bits de la derecha no son todos 0, los 6 bits definen 64 servicios basados en la asignación de prioridad de Internet o de los administradores locales de acuerdo a la siguiente tabla. <img src="./prio_tab.png" alt="prio_tab">
+La primera categoría contiene 32 tipos de servicios, la segunda y la tercera contienen 16 servicios cada una. La primera categoría (números 0, 2, 4, ..., 62) son asignados por Internet (IEFT). La segunda categoría (3, 7 11, 15, ..., 63) puede ser utilizada por los administradores locales (organizaciones). La tercer categoría (1, 5, 9, ... 61) es temporal y puede ser utilizada para experimentación.</p>
+</blockquote>
+</li>
+<li>
+<p>Longitud total: Este es un campo de 16 bits que define la longitud total (cabecera más datos) del datagrama en bytes. Para encontrar la longitud de los datos que vienen de nivel superior se resta la longitud de la cabecera de la longitud total. La longitud de la cabecera se puede obtener multiplicando el valor del campo HLEN por 4.</p>
+</li>
+<li>
+<p>Identificación: Este campo se utiliza en la fragmentación.</p>
+</li>
+<li>
+<p>Indicadores: este campo se utiliza en la fragmentación.</p>
+</li>
+<li>
+<p>Desplazamiento del fragmento: Este campo se utiliza en la fragmentación.</p>
+</li>
+<li>
+<p>Tiempo de vida: Un datagrama tiene un tiempo de vida limitado en su viaje a través de Internet. Este campo se diseñó originalmente para almacenar una marca de tiempo, que se reducía en uno cada vez que visitaba un encaminador. El datagrama se descartaba cuando el valor se hacía 0. Sin embargo, para este esquema, todas las másquinas deben tener sincronizados los relojes y deben conocer cuánto tarda un datagrama en ir de una máquina a otra. Hoy en día este campo se utiliza fundamentalmente para controlar el número máximo de saltos visitados por el datagrama. Cuando un host origen envía el datagrama, almacena un número en este campo. Este valor es aproximadamente 2 veces el número máximo de encaminadores entre cualquier par de hosts. Cada encaminador que procesa el datagrama resta a este número un 1. Si este valor, después de restarse, se hace 0, el encaminador descarta el datagrama.
+Este campo es necesario debido a que las tablas de encaminamiento en Internet se pueden corromper. Un datagrama puede viajar entre dos o más encaminadores durante mucho tiempo sin ser entregado al destino. Este campo limita el tiempo de vida de un datagrama. Otro uso para este campo es limitar intencionalmente el viaje de un paquete. Por ejemplo, si el origen quiere confinar el paquete a la red local, puede almacenar 1 en este campo. Cuando el paquete llega al primer encaminador, este valor se hace 0 y se descarta el datagrama.</p>
+</li>
+<li>
+<p>Protocolo: Este campo de 8 bits define el protocolo de nivel superior que utiliza los servicios del nivel IPv4. Un datagrama IPv4 puede encapsular datos de varios protocolos superiores como TCP, UDP y QUIC (en L4) o en L3 ICMP, IGMP o protocolos de enrutamiento como OSPF, EIGRP, BGP, RIP, etc. Este campo especifica al protocolo de destino final al que se tiene que entregar el datagrama IPv4. En otras palabras, puesto que el protocolo IPv4 puede transportar datos de diferentes protocolos, el valor de este campo ayuda al nivel de red en el receptor a saber a qué protocolo pertenecen los datos. Algunos valores son 1-ICMP, 2-IGMP, 6-TCP, 17-UDP, 89-OSPF</p>
+</li>
+</ul>
+<p><img src="./IPV4_PROTFIELD.png" alt="protf"></p>
+<ul>
+<li>Suma de comprobación: solo protege la información de la cabecera. Checksum, usa el algoritmo CRC.</li>
+<li>Dirección origen: Este campo de 32 bits define la dirección IPv4 de un origen. El campo debe permanecer sin cambio durante todo el tiempo que el datagrama IPv4 viaja desde el origen hasta el destino.</li>
+<li>Dirección de destino: Este campo de 32 bits define la dirección IPv4 del destino. El campo debe permanecer sin cambio durante todo el viaje del datagrama desde el origen hasta el destino.</li>
+</ul>
+<h4 id="fragmentaci%C3%B3n">Fragmentación</h4>
+<p>Un datagrama puede viajar a través de diferentes redes. Cada encaminador extrae el datagrama IPv4 de la trama que recibe, la procesa y la encapsula en otra trama. El formato y el tamaño de la trama recibida dependen del protocolo utilizado por el nivel físico por el cual llega la trama. El formato y el tamaño de la trama enviada dependen del protocolo utilizado en el nivel físico de la red por la que se va a enviar la trama. Por ejemplo, si un encaminador conecta una LAN con una WAN, recibe la trama en el formato de la LAN y la envía en el formato de la WAN.</p>
+<h5 id="unidad-de-transferencia-m%C3%A1xima-mtu">Unidad de transferencia máxima (MTU)</h5>
+<p>Cada protocolo de nivel de enlace de datos tiene su propio formato de trama en la mayoría de los protocolos. Uno de los campos definidos en el formato es el tamaño máximo del campo de datos. En otras palabras, cuando un datagrama se encapsula en una trama, el tamaño total del datagrama debe ser menor que este tamaño máximo, que está definido por restricciones impuestas por el hardware y software utilizados en la red.</p>
+<p>El valor de la MTU depende del protocolo de red físico.</p>
+<p><img src="./MTU.png" alt="MTU"></p>
+<p>Para que el protocolo IPv4 sea independiente de la red física, los diseñadores decidieron hacer el MTU de un datagrama IPv4 igual a 65535. Esto hace la transmisión más eficiente cuando se utiliza un protocolo con una MTU de este tamaño. Sin embargo, para otras redes físicas, se debe dividir el datagrama para que pueda pasar a través de estas redes. A este proceso se lo llama <strong>fragmentación</strong>.</p>
+<p>El origen normalmente no fragmenta el paquete IPv4. El nivel de transporte en su lugar segmentará los datos en un tamaño que se puedan acomodar en IPv4 y en el nivel de enlace de datos que usa.</p>
+<p>Cuando se fragmenta un datagrama, cada fragmento tiene su propia cabecera con la mayoría de los campos repetidos, pero algunos cambiados. Un datagrama fragmentado puede fragmentarse si encuentra una red con una MTU aún más pequeña. En otras palabras, un datagrama puede fragmentarse varias veces hasta alcanzar su destino final.</p>
+<p>En IPv4, un datagrama puede ser fragmentado por el host origen o por cualquier encaminador encontrado en el camino, aunque la tendencia es limitar la fragmentación sólo al origen. El reensamblado del datagrama, sin embargo, sólo se hace en el host destino debido a que cada fragmento es un datagrama independiente. Mientras que el datagrama fragmentado puede viajar a través de caminos diferentes y nunca se puede controlar o garantizar qué camino va a seguir un datagrama fragmentado, todos los fragmentos que pertenecesn al mismo datagrama deberíain finalmente llegar al host destino. Por tanto, es lógico hacer el proceso de reensamblado en el destino final. Una objeción aún más fuerte al proceso de reensamblado de paquetes durante la transmisión es la pérdida de eficiencia que produciría.</p>
+<p>Cuando se fragmenta un datagrama, las partes necesarias de la cabecera deben ser copiadas en todos los fragmentos. El campo de opción puede o no ser copiado. El host o encaminador que fragmenta un datagrama debe cambiar el valor de traes campos: indicadores, desplazamiento del fragmento y longitud total. El resto de los campos deben ser copiados tal cual. Por supuesto, el valor del checksum debe volver a calcularse por cada fragmento del datagrama fragmentado.</p>
+<h5 id="campos-relacionados-con-la-fragmentaci%C3%B3n">Campos relacionados con la fragmentación</h5>
+<p>Los campos que se relacionan con la fragmentación y el reensamblado de un datagrama IPv4 son los campos de identificación, indicadores y de desplazamiento del fragmento.</p>
+<ul>
+<li><strong>Identificación</strong>: este campo de 16 bits identifica un datagrama que procede de un host origen. La combinación de la identificación y de la dirección origen IPv4 deben definir de forma única un datagrama cuando deja el host origen. Para garantizar esta unicidad, el protocolo IPv4 utiliza un contador para etiquetar los datagramas. El contador se inicializa a un número positivo. Cuando el protocolo IPv4 envía un datagrama, copia el valor del contador en el campo de identificación e incrementa el contador en 1. Cuando se fragmenta un datagrama, el valor en el campo de identificación se copia a todos los fragmentos. En otras palabras, todos los fragmentos tienen el mismo número de identificación, el mismo que el datagrama original. El número de identificación ayuda al destino a reensamblar el datagrama. Sabe que todos los fragmentos que tienen la misma identificación deben ser ensamblados en un datagrama.</li>
+<li><strong>Indicadores</strong>: este es un campo de 3 bits. El primer bit está reservado. El segundo bit se denomina <em>bit de no fragmentación</em>. Si su valor es 1, la máquina no debe fragmentar el datagrama. Si no puede pasar el datagrama a través de la red física disponible, lo descarta y envía un mensaje de errore ICMP al hsost origen. Si su valor es 0, el datagrama se puede fragmentar de ser necesario. El tercer bit se denomina <em>bit de más fragmentos</em>. Si su valor es 1, significa que el datagrama no es el último fragmento, hay más fragmentos después de él. Si su valor es 0, significa que éste es el último fragmento o que solo hay un fragmento.</li>
+<li><strong>Desplazamiento del fragmento</strong>: Este campo de 13 bits muestra la posición relativa de este fragmento respecto al datagrama completo. Es el desplazamiento de los datos en el datagrama original medido en unidades de 8 bytes. Es decir, indica desde donde se debe comenzar a leer los datos tratando el datagrama completo.</li>
+</ul>
+<p><img src="./frag.png" alt="frag"></p>
+<h4 id="opciones">Opciones</h4>
+<p>La cabecera de un datagrama IPv4 está compuesta de dos partes: una parte fija y una parte variable. La parte fija tiene una longitud de 20 bytes. La parte variable comprende las opciones que pueden ocupar un máximo de 40 bytes.</p>
+<p>Las opciones, como su nombre implica, no son requeridas para un datagrama. Se pueden utilizar para probar y depurar la red. Aunque las opciones no son una parte obligatoria de la cabecera de un datagrama IPv4, el software sí requiere el procesamiento de las opciones. Esto significa que todas las implementaciones deben ser capaces de tratar las opciones cuando se encuentren presentes en la cabecera.</p>
+<p><img src="./opc.png" alt="opc"></p>
 
 </body>
 </html>
