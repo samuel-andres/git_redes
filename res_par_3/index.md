@@ -1,7 +1,9 @@
 ##### <mark>***samuca***</mark>
-# Índice
+<!-- omit in toc -->
+# ***Resumen Parcial 3 Redes***
+<!-- omit in toc -->
+## Índice
 
-- [Índice](#índice)
 - [Aspectos Generales L3](#aspectos-generales-l3)
   - [Modelos de servicios de red](#modelos-de-servicios-de-red)
     - [CONS: Connection Oriented Network Service | Modelo direccionamiento de Circuito Virtual](#cons-connection-oriented-network-service--modelo-direccionamiento-de-circuito-virtual)
