@@ -20,6 +20,9 @@
 - ABCDEFGHIJKLMNÑOPQRSTUVWXYZ 
 
 # WAN
+
+## Configuración y topología lógica
+
 Para establecer la conexión entre las 3 ciudades, debíamos utilizar una WAN Frame-Relay. Para esto establecimos 3 circuitos virtuales formando una topología full-mesh entre los 3 routers. 
 
 Cada uno de los routers fue conectado mediante un cable serial a la nube frame relay del ISP. En la interfaz serial de cada uno de estos routers se configuraron dos interfaces virtuales con encapsulamiento frame-relay. De este modo la conexión lógica entre los 3 routers es directa (PaP). 
@@ -93,5 +96,11 @@ La configuración de las interfaces seriales involucradas en cada uno de los rou
 > !
 > ```
 
+## Topología física
 
+En el mapa de Argentina la topología física se ve de la siguiente manera, considerando que la nube Frame Relay es una representación lógica:
+>![](./WAN_full_phy_top.png)
+
+
+# LAN - Villa María
 
