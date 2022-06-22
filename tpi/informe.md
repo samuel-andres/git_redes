@@ -1,4 +1,11 @@
 
+- [Consigna](#consigna)
+- [WAN](#wan)
+  - [Configuración y topología lógica](#configuración-y-topología-lógica)
+  - [Topología física](#topología-física)
+- [LAN - Villa María](#lan---villa-maría)
+
+
 # Consigna
 
 - ABCDEFGHIJKLMNÑOPQRSTUVWXYZ
@@ -99,8 +106,16 @@ La configuración de las interfaces seriales involucradas en cada uno de los rou
 ## Topología física
 
 En el mapa de Argentina la topología física se ve de la siguiente manera, considerando que la nube Frame Relay es una representación lógica:
->![](./WAN_full_phy_top.png)
 
+>![WAN_full_phy_top.png](./WAN_full_phy_top.png)
+
+Luego, dentro de cada oficina, en cada edificio de cada ciudad, se encuentra un habitación de cableado con un RACK, donde, entre otras cosas, está el Router, con la conexión serial:
+
+>***Villa María*** <br/>
+>![RAC_VM](./WAN_wc_ph_top_VM.png) <br/>
+>***Bariloche*** <br/>
+>![RAC_BR](./WAN_wc_ph_top_BR.png) <br/>
+>***Mendoza*** <br/>
+>![RAC_MZ](./WAN_wc_ph_top_MZ.png) <br/>
 
 # LAN - Villa María
-
