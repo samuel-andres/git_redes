@@ -365,17 +365,28 @@ code {
           : 'default'
     });
   </script>
+<!-- omit in toc -->
+<h1 id="datos">Datos</h1>
+<ul>
+<li>Nombre: Samuel Andrés</li>
+<li>Legajo: 12953</li>
+<li>Materia: Redes de Información</li>
+<li>TP: Trabajo Práctico Integrador</li>
+<li>UTN-FRVM - 2022</li>
+</ul>
+<!-- omit in toc -->
+<h1 id="%C3%ADndice">Índice</h1>
 <ul>
 <li><a href="#consigna">Consigna</a></li>
 <li><a href="#wan">WAN</a>
 <ul>
-<li><a href="#configuraci%C3%B3n-y-topolog%C3%ADa-l%C3%B3gica">Configuración y topología lógica</a></li>
-<li><a href="#topolog%C3%ADa-f%C3%ADsica">Topología física</a></li>
+<li><a href="#configuraci%C3%B3n-y-vista-l%C3%B3gica">Configuración y vista lógica</a></li>
+<li><a href="#vista-f%C3%ADsica">Vista física</a></li>
 </ul>
 </li>
 <li><a href="#lans">LANs</a>
 <ul>
-<li><a href="#topolog%C3%ADa-l%C3%B3gica">Topología lógica</a></li>
+<li><a href="#vista-l%C3%B3gica">Vista lógica</a></li>
 <li><a href="#vlans">VLANs</a></li>
 <li><a href="#dhcp">DHCP</a>
 <ul>
@@ -391,6 +402,8 @@ code {
 <li><a href="#tablas-de-resumen">Tablas de resumen</a></li>
 </ul>
 </li>
+<li><a href="#configuraci%C3%B3n-de-protocolo-din%C3%A1mico-de-enrutamiento">Configuración de protocolo dinámico de enrutamiento</a></li>
+<li><a href="#vista-l%C3%B3gica-total">Vista Lógica Total</a></li>
 </ul>
 <h1 id="consigna">Consigna</h1>
 <ul>
@@ -416,7 +429,7 @@ code {
 </li>
 </ul>
 <h1 id="wan">WAN</h1>
-<h2 id="configuraci%C3%B3n-y-topolog%C3%ADa-l%C3%B3gica">Configuración y topología lógica</h2>
+<h2 id="configuraci%C3%B3n-y-vista-l%C3%B3gica">Configuración y vista lógica</h2>
 <p>Para establecer la conexión entre las 3 ciudades, debíamos utilizar WAN Frame-Relay. Para esto establecimos 3 circuitos virtuales formando una topología full-mesh entre los 3 routers.</p>
 <p>Cada uno de los routers fue conectado mediante un cable serial a la nube frame relay del ISP. En la interfaz serial de cada uno de estos routers se configuraron dos interfaces virtuales con encapsulamiento frame-relay. De este modo la conexión lógica entre los 3 routers es directa (PaP).</p>
 <table>
@@ -482,7 +495,7 @@ code {
 </tbody>
 </table>
 <blockquote>
-<p><em><strong>Topología lógica</strong></em> <br/>
+<p><em><strong>Vista lógica</strong></em> <br/>
 <img src="fr_logtop.png" alt="fr_logtop"></p>
 </blockquote>
 <p>Para que esto funcione tuvimos que también configurar los circuitos virtuales (PVCs) en la nube Frame Relay:</p>
@@ -541,7 +554,7 @@ interface Serial0/1/0.302 point-to-point
 !
 </div></code></pre>
 </blockquote>
-<h2 id="topolog%C3%ADa-f%C3%ADsica">Topología física</h2>
+<h2 id="vista-f%C3%ADsica">Vista física</h2>
 <p>En el mapa de Argentina la topología física se ve de la siguiente manera, considerando que la nube Frame Relay es una representación lógica:</p>
 <blockquote>
 <p><img src="./WAN_full_phy_top.png" alt="WAN_full_phy_top.png"></p>
@@ -556,10 +569,18 @@ interface Serial0/1/0.302 point-to-point
 <img src="./WAN_wc_ph_top_MZ.png" alt="RAC_MZ"> <br/></p>
 </blockquote>
 <h1 id="lans">LANs</h1>
-<h2 id="topolog%C3%ADa-l%C3%B3gica">Topología lógica</h2>
-<p>La topología lógica de la LAN de Villa María se ve de la siguiente manera: <br/></p>
+<h2 id="vista-l%C3%B3gica">Vista lógica</h2>
+<p>La vista lógica de la LAN de Villa María se ve de la siguiente manera: <br/></p>
 <blockquote>
 <p><img src="./vm_logtop.png" alt="vm_logtop"></p>
+</blockquote>
+<p>La vista lógica de la LAN de Bariloche se ve de la siguiente manera: <br/></p>
+<blockquote>
+<p><img src="./br_logtop.png" alt="br_logtop"></p>
+</blockquote>
+<p>La vista lógica de la LAN de Mendoza se ve de la siguiente manera: <br/></p>
+<blockquote>
+<p><img src="./mz_logtop.png" alt="mz_logtop"></p>
 </blockquote>
 <h2 id="vlans">VLANs</h2>
 <p>Lo primero fue crear las VLANs en cada switch:</p>
@@ -1107,6 +1128,44 @@ Pero primero, unas tablas en modo de resumen sobre la configuración realizada e
 </tr>
 </tbody>
 </table>
+<h1 id="configuraci%C3%B3n-de-protocolo-din%C3%A1mico-de-enrutamiento">Configuración de protocolo dinámico de enrutamiento</h1>
+<p>Por último, para permitir la conectividad entre las redes de las 3 ciudades, los routers deben informar sobre las redes directamente conectadas a los mismos a los demás routers, para esto utilizamos el protocolo RIP (Routing Information Protocol).</p>
+<p>La configuración de RIP en la CLI de Cisco se da con los siguientes comandos:</p>
+<ul>
+<li>router rip: para ingresar a la configuración del protocolo en el router</li>
+<li>version 2: para especificar que queremos utilizar RIPv2, ya que RIPv1 no soporta CIDR, y las redes que utilizamos en el laboratorio son todas CIDR. (Clase A con máscara 24)</li>
+<li>no auto-summary: para evitar la sumarización de rutas a la hora de enviar RIP updates. (si no se desactiva podría generar conflictos ya que se podrían sumarizar todas las rutas como una única ruta de clase A con máscara 24)</li>
+<li>network A.B.C.D: este comando se utiliza para especificar en que interfaces del router queremos activar RIP para informar de sus redes a los demás vecinos. La dirección que se especifica en este comando es classfull, lo que significa que se aplica el and lógico con la máscara por defecto de la clase a la que pertenece la dirección, y todas las redes que caigan en ese rango serán informadas.</li>
+</ul>
+<p>Por lo tanto la configuración en los 3 routers es la siguiente:</p>
+<pre class="hljs"><code><div>router rip
+ version 2
+ network 10.0.0.0
+ no auto-summary
+!
+</div></code></pre>
+<p>Resultando en:</p>
+<blockquote>
+<p><em><strong>Villa María</strong></em>: <br/>
+Información de RIP: <br/>
+<img src="./rip_vm.png" alt="rip_vm"> <br/>
+Tabla de enrutamiento: <br/>
+<img src="./rt_vm.png" alt="rt_vm"> <br/>
+<em><strong>Bariloche</strong></em>: <br/>
+Información de RIP: <br/>
+<img src="./rip_br.png" alt="rip_br"> <br/>
+Tabla de enrutamiento: <br/>
+<img src="./rt_br.png" alt="rt_br"> <br/>
+<em><strong>Mendoza</strong></em>: <br/>
+Información de RIP: <br/>
+<img src="./rip_mz.png" alt="rip_mz"> <br/>
+Tabla de enrutamiento: <br/>
+<img src="./rt_mz.png" alt="rt_mz"> <br/></p>
+</blockquote>
+<p>Como se puede ver, cada router compartió su tabla de enrutamiento con los demás y todos los routers aprendieron todas las rutas a todas las redes de la compañía.</p>
+<p>Con esta última configuración la conectividad es total.</p>
+<h1 id="vista-l%C3%B3gica-total">Vista Lógica Total</h1>
+<p><img src="./full_logtop.png" alt="full_logtp"></p>
 
 </body>
 </html>

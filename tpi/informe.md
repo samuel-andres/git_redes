@@ -1,10 +1,18 @@
-
+<!-- omit in toc -->
+# Datos
+- Nombre: Samuel Andrés
+- Legajo: 12953
+- Materia: Redes de Información
+- TP: Trabajo Práctico Integrador
+- UTN-FRVM - 2022
+<!-- omit in toc -->
+# Índice
 - [Consigna](#consigna)
 - [WAN](#wan)
-  - [Configuración y topología lógica](#configuración-y-topología-lógica)
-  - [Topología física](#topología-física)
+  - [Configuración y vista lógica](#configuración-y-vista-lógica)
+  - [Vista física](#vista-física)
 - [LANs](#lans)
-  - [Topología lógica](#topología-lógica)
+  - [Vista lógica](#vista-lógica)
   - [VLANs](#vlans)
   - [DHCP](#dhcp)
     - [Villa María](#villa-maría)
@@ -13,7 +21,7 @@
     - [Mendoza](#mendoza)
   - [Tablas de resumen](#tablas-de-resumen)
 - [Configuración de protocolo dinámico de enrutamiento](#configuración-de-protocolo-dinámico-de-enrutamiento)
-
+- [Vista Lógica Total](#vista-lógica-total)
 
 # Consigna
 
@@ -31,7 +39,7 @@
 
 # WAN
 
-## Configuración y topología lógica
+## Configuración y vista lógica
 
 Para establecer la conexión entre las 3 ciudades, debíamos utilizar WAN Frame-Relay. Para esto establecimos 3 circuitos virtuales formando una topología full-mesh entre los 3 routers. 
 
@@ -46,7 +54,7 @@ Cada uno de los routers fue conectado mediante un cable serial a la nube frame r
 | **RMZ**    | serial 0/1/0        | s 0/1/0.301          | 301                            | 10.0.3.2/24                    | 10.0.3.0/24          |
 | **RMZ**    | serial 0/1/0        | s 0/1/0.302          | 302                            | 10.0.2.1/24                    | 10.0.2.0/24          |
 
-> ***Topología lógica*** <br/>
+> ***Vista lógica*** <br/>
 > ![fr_logtop](fr_logtop.png)
 
 Para que esto funcione tuvimos que también configurar los circuitos virtuales (PVCs) en la nube Frame Relay:
@@ -106,7 +114,7 @@ La configuración de las interfaces seriales involucradas en cada uno de los rou
 > !
 > ```
 
-## Topología física
+## Vista física
 
 En el mapa de Argentina la topología física se ve de la siguiente manera, considerando que la nube Frame Relay es una representación lógica:
 
@@ -123,10 +131,16 @@ Luego, dentro de cada oficina, en cada edificio de cada ciudad, se encuentra un 
 
 # LANs
 
-## Topología lógica
+## Vista lógica
 
-La topología lógica de la LAN de Villa María se ve de la siguiente manera: <br/> 
+La vista lógica de la LAN de Villa María se ve de la siguiente manera: <br/> 
 > ![vm_logtop](./vm_logtop.png)
+
+La vista lógica de la LAN de Bariloche se ve de la siguiente manera: <br/> 
+> ![br_logtop](./br_logtop.png)
+
+La vista lógica de la LAN de Mendoza se ve de la siguiente manera: <br/> 
+> ![mz_logtop](./mz_logtop.png)
 
 ## VLANs
 
@@ -371,4 +385,40 @@ Pero primero, unas tablas en modo de resumen sobre la configuración realizada e
 
 Por último, para permitir la conectividad entre las redes de las 3 ciudades, los routers deben informar sobre las redes directamente conectadas a los mismos a los demás routers, para esto utilizamos el protocolo RIP (Routing Information Protocol). 
 
-La configuración de RIP en ro
+La configuración de RIP en la CLI de Cisco se da con los siguientes comandos:
+- router rip: para ingresar a la configuración del protocolo en el router
+- version 2: para especificar que queremos utilizar RIPv2, ya que RIPv1 no soporta CIDR, y las redes que utilizamos en el laboratorio son todas CIDR. (Clase A con máscara 24)
+- no auto-summary: para evitar la sumarización de rutas a la hora de enviar RIP updates. (si no se desactiva podría generar conflictos ya que se podrían sumarizar todas las rutas como una única ruta de clase A con máscara 24)
+- network A.B.C.D: este comando se utiliza para especificar en que interfaces del router queremos activar RIP para informar de sus redes a los demás vecinos. La dirección que se especifica en este comando es classfull, lo que significa que se aplica el and lógico con la máscara por defecto de la clase a la que pertenece la dirección, y todas las redes que caigan en ese rango serán informadas.
+
+Por lo tanto la configuración en los 3 routers es la siguiente:
+``` code
+router rip
+ version 2
+ network 10.0.0.0
+ no auto-summary
+!
+```
+Resultando en:
+> ***Villa María***: <br/>
+> Información de RIP: <br/>
+> ![rip_vm](./rip_vm.png) <br/>
+> Tabla de enrutamiento: <br/>
+> ![rt_vm](./rt_vm.png) <br/>
+> ***Bariloche***: <br/>
+> Información de RIP: <br/>
+> ![rip_br](./rip_br.png) <br/>
+> Tabla de enrutamiento: <br/>
+> ![rt_br](./rt_br.png) <br/>
+> ***Mendoza***: <br/>
+> Información de RIP: <br/>
+> ![rip_mz](./rip_mz.png) <br/>
+> Tabla de enrutamiento: <br/>
+> ![rt_mz](./rt_mz.png) <br/>
+
+Como se puede ver, cada router compartió su tabla de enrutamiento con los demás y todos los routers aprendieron todas las rutas a todas las redes de la compañía. 
+
+Con esta última configuración la conectividad es total.
+
+# Vista Lógica Total
+![full_logtp](./full_logtop.png)
