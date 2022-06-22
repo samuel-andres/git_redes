@@ -9,6 +9,10 @@
   - [DHCP](#dhcp)
     - [Villa María](#villa-maría)
       - [Router WiFi](#router-wifi)
+    - [Bariloche](#bariloche)
+    - [Mendoza](#mendoza)
+  - [Tablas de resumen](#tablas-de-resumen)
+- [Configuración de protocolo dinámico de enrutamiento](#configuración-de-protocolo-dinámico-de-enrutamiento)
 
 
 # Consigna
@@ -270,3 +274,101 @@ Una vez configurado el Router WiFi en modo Bridge procedí a conectar tanto la t
 
 De este modo la configuración DHCP de Villa María fue exitosa y todos los dispositivos en esta locación recibieron información de la red (Dirección IP, DG, etc.)
 
+> ***Desactivando DHCP*** <br/>
+> ![dhcp_dis](./dhcp_dis_bridge_vm.png) <br/>
+> ***Configurando SSID*** <br/>
+> ![ssid](./ssid_bridge_vm.png) <br/>
+> ***Configurando WPA2*** <br/>
+> ![wpa2](./wpa2_bridge_vm.png) <br/>
+
+Esta configuración se replicó tanto en Mendoza como en Bariloche cambiando el SSID por el de la localidad correspondiente.
+
+### Bariloche
+Como en bariloche no utilicé servidores DHCP físicos sino que configure 3 DHCP-pools en el Router, lo único que tuve que hacer fue crearlas y excluir las direcciones correspondientes:
+- VLAN2: IP del Router
+- VLAN3: IP del Router e IP de la Impresora
+- VLAN4: IP del Router
+La configuración fue la siguiente:
+``` code
+ip dhcp excluded-address 10.2.2.1 10.2.2.10
+ip dhcp excluded-address 10.2.3.1 10.2.3.10
+ip dhcp excluded-address 10.2.4.1 10.2.4.10
+!
+ip dhcp pool VLAN2
+ network 10.2.2.0 255.255.255.0
+ default-router 10.2.2.1
+ip dhcp pool VLAN3
+ network 10.2.3.0 255.255.255.0
+ default-router 10.2.3.1
+ip dhcp pool VLAN4
+ network 10.2.4.0 255.255.255.0
+ default-router 10.2.4.1
+```
+> Resultando en las siguientes DHCP-pools: <br/>
+> ![DHCP_pools_BR](./dhcp_pools_br.png)
+
+De esta manera todos los dispositivos en la red de Bariloche recibieron su IP correspondiente en el rango .10-.254
+
+### Mendoza
+Por último, en Mendoza configuré 3 servidores físicos, cada uno con una única interfaz física conectada a la VLAN correspondiente en la que asignará IPs. Muestro solo la parte física ya que la configuración es igual a lo hecho en Villa María con el servidor DHCP de las VLANs 2 y 3 <br/>
+![DHCP_svs_mz](./DHCP_svs_mz.png)
+
+*La IP de las impresoras, tanto en BR, MZ y VM las configuré estáticamente.
+
+Con estas configuraciones, la conectividad es TOTAL, dentro de cada oficina, es decir, los dispositivos entre distintas VLANs que se encuentran en al misma oficina se pueden comunicar a través del Router, solo faltaría configurar las rutas para que los Routers se informen de las redes que conocen y puedan popular su tabla de enrutamiento para permitir la conectividad total entre las 3 ciudades. <br/>
+Pero primero, unas tablas en modo de resumen sobre la configuración realizada en cada ciudad.
+
+## Tablas de resumen
+***Villa María*** <br/>
+
+| **Nombre**     | **Modelo** | **Interfaz** | **Dirección IP** | **Dirección de Red** | **Puerto del Switch** | **VLAN**    |
+|----------------|------------|--------------|------------------|----------------------|-----------------------|-------------|
+| **RVM**        | ISR4331    | g0/0/0.2     | 10.1.2.1/24      | 10.1.2.0/24          | g0/0 (TRUNK)          | 2 (tag .1q) |
+| **RVM**        | ISR4331    | g0/0/0.3     | 10.1.3.1/24      | 10.1.3.0/24          | g0/0 (TRUNK)          | 3 (tag .1q) |
+| **RVM**        | ISR4331    | g0/0/0.4     | 10.1.4.1/24      | 10.1.4.0/24          | g0/0 (TRUNK)          | 4 (tag .1q) |
+| **PC1-VM**     | PC         | Fa0          | DHCP (+.10)      | 10.1.2.0/24          | fa0/1 (ACCESS)        | 2           |
+| **PC2-VM**     | PC         | Fa0          | DHCP (+.10)      | 10.1.2.0/24          | fa0/2 (ACCESS)        | 2           |
+| **PC3-VM**     | PC         | Fa0          | DHCP (+.10)      | 10.1.3.0/24          | fa0/3 (ACCESS)        | 3           |
+| **Pr1-VM**     | Printer    | Fa0          | 10.1.3.3/24      | 10.1.3.0/24          | fa0/4 (ACCESS)        | 3           |
+| **WiFi-VM**    | WRT-300N   | Ethernet 1   | -                | -                    | fa0/5                 | 4           |
+| **Nb1-VM**     | Notebook   | Wi0          | DHCP (+.10)      | 10.1.4.0/24          | *Wi del WRT300N       | 4           |
+| **Tb1-VM**     | Tablet     | Wi0          | DHCP (+.10)      | 10.1.4.0/24          | *Wi del WRT300N       | 4           |
+| **DHCP-SV-VM** | Server     | Fa0          | 10.1.2.2/24      | 10.1.2.0/24          | fa0/20                | 2           |
+| **DHCP-SV-VM** | Server     | Fa1          | 10.1.3.2/24      | 10.1.3.0/24          | fa0/23                | 3           |
+
+***Bariloche***
+| **Nombre**  | **Modelo** | **Interfaz** | **Dirección IP** | **Dirección de Red** | **Puerto del Switch** | **VLAN**    |
+|-------------|------------|--------------|------------------|----------------------|-----------------------|-------------|
+| **RBR**     | ISR4331    | g0/0/0.2     | 10.2.2.1/24      | 10.2.2.0/24          | g0/0 (TRUNK)          | 2 (tag .1q) |
+| **RBR**     | ISR4331    | g0/0/0.3     | 10.2.3.1/24      | 10.2.3.0/24          | g0/0 (TRUNK)          | 3 (tag .1q) |
+| **RBR**     | ISR4331    | g0/0/0.4     | 10.2.4.1/24      | 10.2.4.0/24          | g0/0 (TRUNK)          | 4 (tag .1q) |
+| **PC1-BR**  | PC         | Fa0          | DHCP (+.10)      | 10.2.2.0/24          | fa0/1 (ACCESS)        | 2           |
+| **PC2-BR**  | PC         | Fa0          | DHCP (+.10)      | 10.2.2.0/24          | fa0/2 (ACCESS)        | 2           |
+| **PC3-BR**  | PC         | Fa0          | DHCP (+.10)      | 10.2.3.0/24          | fa0/3 (ACCESS)        | 3           |
+| **Pr1-BR**  | Printer    | Fa0          | 10.2.3.3/24      | 10.2.3.0/24          | fa0/4 (ACCESS)        | 3           |
+| **WiFi-BR** | WRT-300N   | Ethernet 1   | -                | -                    | fa0/5                 | 4           |
+| **Nb1-BR**  | Notebook   | Wi0          | DHCP (+.10)      | 10.2.4.0/24          | *Wi del WRT300N       | 4           |
+| **Tb1-BR**  | Tablet     | Wi0          | DHCP (+.10)      | 10.2.4.0/24          | *Wi del WRT300N       | 4           |
+
+***Mendoza***
+| **Nombre**         | **Modelo** | **Interfaz** | **Dirección IP** | **Dirección de Red** | **Puerto del Switch** | **VLAN**    |
+|--------------------|------------|--------------|------------------|----------------------|-----------------------|-------------|
+| **RMZ**            | ISR4331    | g0/0/0.2     | 10.2.2.1/24      | 10.2.2.0/24          | g0/0 (TRUNK)          | 2 (tag .1q) |
+| **RMZ**            | ISR4331    | g0/0/0.3     | 10.2.3.1/24      | 10.2.3.0/24          | g0/0 (TRUNK)          | 3 (tag .1q) |
+| **RMZ**            | ISR4331    | g0/0/0.4     | 10.2.4.1/24      | 10.2.4.0/24          | g0/0 (TRUNK)          | 4 (tag .1q) |
+| **PC1-MZ**         | PC         | Fa0          | DHCP (+.10)      | 10.2.2.0/24          | fa0/1 (ACCESS)        | 2           |
+| **PC2-MZ**         | PC         | Fa0          | DHCP (+.10)      | 10.2.2.0/24          | fa0/2 (ACCESS)        | 2           |
+| **PC3-MZ**         | PC         | Fa0          | DHCP (+.10)      | 10.2.3.0/24          | fa0/3 (ACCESS)        | 3           |
+| **Pr1-MZ**         | Printer    | Fa0          | 10.2.3.3/24      | 10.2.3.0/24          | fa0/4 (ACCESS)        | 3           |
+| **WiFi-MZ**        | WRT-300N   | Ethernet 1   | -                | -                    | fa0/5                 | 4           |
+| **Nb1-MZ**         | Notebook   | Wi0          | DHCP (+.10)      | 10.2.4.0/24          | *Wi del WRT300N       | 4           |
+| **Tb1-MZ**         | Tablet     | Wi0          | DHCP (+.10)      | 10.2.4.0/24          | *Wi del WRT300N       | 4           |
+| **SV-DHCP-VL2-MZ** | Server     | Fa0          | 10.3.2.2/24      | 10.3.2.0/24          | fa0/12                | 2           |
+| **SV-DHCP-VL3-MZ** | Server     | Fa0          | 10.3.3.2/24      | 10.3.3.0/24          | fa0/13                | 3           |
+| **SV-DHCP-VL4-MZ** | Server     | Fa0          | 10.3.4.2/24      | 10.3.4.0/24          | fa0/14                | 4           |
+
+# Configuración de protocolo dinámico de enrutamiento
+
+Por último, para permitir la conectividad entre las redes de las 3 ciudades, los routers deben informar sobre las redes directamente conectadas a los mismos a los demás routers, para esto utilizamos el protocolo RIP (Routing Information Protocol). 
+
+La configuración de RIP en ro

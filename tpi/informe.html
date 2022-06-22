@@ -384,8 +384,11 @@ code {
 <li><a href="#router-wifi">Router WiFi</a></li>
 </ul>
 </li>
+<li><a href="#bariloche">Bariloche</a></li>
+<li><a href="#mendoza">Mendoza</a></li>
 </ul>
 </li>
+<li><a href="#tablas-de-resumen">Tablas de resumen</a></li>
 </ul>
 </li>
 </ul>
@@ -698,6 +701,412 @@ Esto lo hice desde la GUI del mismo en la solapa de configuración-configuració
 Además definí un SSID denominado 'villamaria' y una contraseña bajo el protocolo WPA2 que definí como 'redes2022'. <br/>
 Una vez configurado el Router WiFi en modo Bridge procedí a conectar tanto la tablet como la notebook al mismo.</p>
 <p>De este modo la configuración DHCP de Villa María fue exitosa y todos los dispositivos en esta locación recibieron información de la red (Dirección IP, DG, etc.)</p>
+<blockquote>
+<p><em><strong>Desactivando DHCP</strong></em> <br/>
+<img src="./dhcp_dis_bridge_vm.png" alt="dhcp_dis"> <br/>
+<em><strong>Configurando SSID</strong></em> <br/>
+<img src="./ssid_bridge_vm.png" alt="ssid"> <br/>
+<em><strong>Configurando WPA2</strong></em> <br/>
+<img src="./wpa2_bridge_vm.png" alt="wpa2"> <br/></p>
+</blockquote>
+<p>Esta configuración se replicó tanto en Mendoza como en Bariloche cambiando el SSID por el de la localidad correspondiente.</p>
+<h3 id="bariloche">Bariloche</h3>
+<p>Como en bariloche no utilicé servidores DHCP físicos sino que configure 3 DHCP-pools en el Router, lo único que tuve que hacer fue crearlas y excluir las direcciones correspondientes:</p>
+<ul>
+<li>VLAN2: IP del Router</li>
+<li>VLAN3: IP del Router e IP de la Impresora</li>
+<li>VLAN4: IP del Router
+La configuración fue la siguiente:</li>
+</ul>
+<pre class="hljs"><code><div>ip dhcp excluded-address 10.2.2.1 10.2.2.10
+ip dhcp excluded-address 10.2.3.1 10.2.3.10
+ip dhcp excluded-address 10.2.4.1 10.2.4.10
+!
+ip dhcp pool VLAN2
+ network 10.2.2.0 255.255.255.0
+ default-router 10.2.2.1
+ip dhcp pool VLAN3
+ network 10.2.3.0 255.255.255.0
+ default-router 10.2.3.1
+ip dhcp pool VLAN4
+ network 10.2.4.0 255.255.255.0
+ default-router 10.2.4.1
+</div></code></pre>
+<blockquote>
+<p>Resultando en las siguientes DHCP-pools: <br/>
+<img src="./dhcp_pools_br.png" alt="DHCP_pools_BR"></p>
+</blockquote>
+<p>De esta manera todos los dispositivos en la red de Bariloche recibieron su IP correspondiente en el rango .10-.254</p>
+<h3 id="mendoza">Mendoza</h3>
+<p>Por último, en Mendoza configuré 3 servidores físicos, cada uno con una única interfaz física conectada a la VLAN correspondiente en la que asignará IPs. Muestro solo la parte física ya que la configuración es igual a lo hecho en Villa María con el servidor DHCP de las VLANs 2 y 3 <br/>
+<img src="./DHCP_svs_mz.png" alt="DHCP_svs_mz"></p>
+<p>*La IP de las impresoras, tanto en BR, MZ y VM las configuré estáticamente.</p>
+<p>Con estas configuraciones, la conectividad es TOTAL, dentro de cada oficina, es decir, los dispositivos entre distintas VLANs que se encuentran en al misma oficina se pueden comunicar a través del Router, solo faltaría configurar las rutas para que los Routers se informen de las redes que conocen y puedan popular su tabla de enrutamiento para permitir la conectividad total entre las 3 ciudades. <br/>
+Pero primero, unas tablas en modo de resumen sobre la configuración realizada en cada ciudad.</p>
+<h2 id="tablas-de-resumen">Tablas de resumen</h2>
+<p><em><strong>Villa María</strong></em> <br/></p>
+<table>
+<thead>
+<tr>
+<th><strong>Nombre</strong></th>
+<th><strong>Modelo</strong></th>
+<th><strong>Interfaz</strong></th>
+<th><strong>Dirección IP</strong></th>
+<th><strong>Dirección de Red</strong></th>
+<th><strong>Puerto del Switch</strong></th>
+<th><strong>VLAN</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RVM</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.2</td>
+<td>10.1.2.1/24</td>
+<td>10.1.2.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>2 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>RVM</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.3</td>
+<td>10.1.3.1/24</td>
+<td>10.1.3.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>3 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>RVM</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.4</td>
+<td>10.1.4.1/24</td>
+<td>10.1.4.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>4 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>PC1-VM</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.1.2.0/24</td>
+<td>fa0/1 (ACCESS)</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PC2-VM</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.1.2.0/24</td>
+<td>fa0/2 (ACCESS)</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PC3-VM</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.1.3.0/24</td>
+<td>fa0/3 (ACCESS)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>Pr1-VM</strong></td>
+<td>Printer</td>
+<td>Fa0</td>
+<td>10.1.3.3/24</td>
+<td>10.1.3.0/24</td>
+<td>fa0/4 (ACCESS)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>WiFi-VM</strong></td>
+<td>WRT-300N</td>
+<td>Ethernet 1</td>
+<td>-</td>
+<td>-</td>
+<td>fa0/5</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Nb1-VM</strong></td>
+<td>Notebook</td>
+<td>Wi0</td>
+<td>DHCP (+.10)</td>
+<td>10.1.4.0/24</td>
+<td>*Wi del WRT300N</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Tb1-VM</strong></td>
+<td>Tablet</td>
+<td>Wi0</td>
+<td>DHCP (+.10)</td>
+<td>10.1.4.0/24</td>
+<td>*Wi del WRT300N</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>DHCP-SV-VM</strong></td>
+<td>Server</td>
+<td>Fa0</td>
+<td>10.1.2.2/24</td>
+<td>10.1.2.0/24</td>
+<td>fa0/20</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>DHCP-SV-VM</strong></td>
+<td>Server</td>
+<td>Fa1</td>
+<td>10.1.3.2/24</td>
+<td>10.1.3.0/24</td>
+<td>fa0/23</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>Bariloche</strong></em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Nombre</strong></th>
+<th><strong>Modelo</strong></th>
+<th><strong>Interfaz</strong></th>
+<th><strong>Dirección IP</strong></th>
+<th><strong>Dirección de Red</strong></th>
+<th><strong>Puerto del Switch</strong></th>
+<th><strong>VLAN</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RBR</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.2</td>
+<td>10.2.2.1/24</td>
+<td>10.2.2.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>2 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>RBR</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.3</td>
+<td>10.2.3.1/24</td>
+<td>10.2.3.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>3 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>RBR</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.4</td>
+<td>10.2.4.1/24</td>
+<td>10.2.4.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>4 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>PC1-BR</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.2.0/24</td>
+<td>fa0/1 (ACCESS)</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PC2-BR</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.2.0/24</td>
+<td>fa0/2 (ACCESS)</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PC3-BR</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.3.0/24</td>
+<td>fa0/3 (ACCESS)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>Pr1-BR</strong></td>
+<td>Printer</td>
+<td>Fa0</td>
+<td>10.2.3.3/24</td>
+<td>10.2.3.0/24</td>
+<td>fa0/4 (ACCESS)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>WiFi-BR</strong></td>
+<td>WRT-300N</td>
+<td>Ethernet 1</td>
+<td>-</td>
+<td>-</td>
+<td>fa0/5</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Nb1-BR</strong></td>
+<td>Notebook</td>
+<td>Wi0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.4.0/24</td>
+<td>*Wi del WRT300N</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Tb1-BR</strong></td>
+<td>Tablet</td>
+<td>Wi0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.4.0/24</td>
+<td>*Wi del WRT300N</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>Mendoza</strong></em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Nombre</strong></th>
+<th><strong>Modelo</strong></th>
+<th><strong>Interfaz</strong></th>
+<th><strong>Dirección IP</strong></th>
+<th><strong>Dirección de Red</strong></th>
+<th><strong>Puerto del Switch</strong></th>
+<th><strong>VLAN</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RMZ</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.2</td>
+<td>10.2.2.1/24</td>
+<td>10.2.2.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>2 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>RMZ</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.3</td>
+<td>10.2.3.1/24</td>
+<td>10.2.3.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>3 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>RMZ</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.4</td>
+<td>10.2.4.1/24</td>
+<td>10.2.4.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>4 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>PC1-MZ</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.2.0/24</td>
+<td>fa0/1 (ACCESS)</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PC2-MZ</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.2.0/24</td>
+<td>fa0/2 (ACCESS)</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PC3-MZ</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.3.0/24</td>
+<td>fa0/3 (ACCESS)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>Pr1-MZ</strong></td>
+<td>Printer</td>
+<td>Fa0</td>
+<td>10.2.3.3/24</td>
+<td>10.2.3.0/24</td>
+<td>fa0/4 (ACCESS)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>WiFi-MZ</strong></td>
+<td>WRT-300N</td>
+<td>Ethernet 1</td>
+<td>-</td>
+<td>-</td>
+<td>fa0/5</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Nb1-MZ</strong></td>
+<td>Notebook</td>
+<td>Wi0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.4.0/24</td>
+<td>*Wi del WRT300N</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Tb1-MZ</strong></td>
+<td>Tablet</td>
+<td>Wi0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.4.0/24</td>
+<td>*Wi del WRT300N</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>SV-DHCP-VL2-MZ</strong></td>
+<td>Server</td>
+<td>Fa0</td>
+<td>10.3.2.2/24</td>
+<td>10.3.2.0/24</td>
+<td>fa0/12</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>SV-DHCP-VL3-MZ</strong></td>
+<td>Server</td>
+<td>Fa0</td>
+<td>10.3.3.2/24</td>
+<td>10.3.3.0/24</td>
+<td>fa0/13</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>SV-DHCP-VL4-MZ</strong></td>
+<td>Server</td>
+<td>Fa0</td>
+<td>10.3.4.2/24</td>
+<td>10.3.4.0/24</td>
+<td>fa0/14</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
 
 </body>
 </html>
