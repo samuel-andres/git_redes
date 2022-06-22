@@ -394,6 +394,47 @@ code {
 <li><a href="#dise%C3%B1o-de-capacidad-de-una-red">Diseño de capacidad de una red</a></li>
 </ul>
 </li>
+<li><a href="#protocolos-din%C3%A1micos-de-enrutamiento">Protocolos dinámicos de enrutamiento</a>
+<ul>
+<li><a href="#igp-distance-vector">IGP: Distance Vector</a>
+<ul>
+<li><a href="#funcionamiento-del-algoritmo">Funcionamiento del algoritmo:</a></li>
+<li><a href="#caracter%C3%ADsticas-diferenciales-del-algoritmo">Características diferenciales del algoritmo:</a></li>
+<li><a href="#timers">Timers:</a></li>
+<li><a href="#problemas-comunes">Problemas comunes</a></li>
+</ul>
+</li>
+<li><a href="#igp-link-state">IGP: Link State</a>
+<ul>
+<li><a href="#caracter%C3%ADsticas-diferenciales-del-algoritmo-1">Características diferenciales del algoritmo:</a></li>
+<li><a href="#algoritmo-aplicado-por-cada-router-a-su-lsdb">Algoritmo aplicado por cada router a su LSDB</a></li>
+</ul>
+</li>
+<li><a href="#routers-con-m%C3%BAltiples-protocolos-de-enrutamiento-din%C3%A1mico">Routers con múltiples protocolos de enrutamiento dinámico</a></li>
+</ul>
+</li>
+<li><a href="#routing-information-protocol">Routing Information Protocol</a>
+<ul>
+<li><a href="#caracter%C3%ADsticas-diferenciales-del-protocolo">Características diferenciales del protocolo</a></li>
+<li><a href="#autenticaci%C3%B3n">Autenticación:</a></li>
+<li><a href="#rip-timers">RIP Timers</a></li>
+</ul>
+</li>
+<li><a href="#enhanced-interior-gateway-protocol">Enhanced Interior Gateway Protocol</a>
+<ul>
+<li><a href="#caracter%C3%ADsticas-diferenciales-del-protocolo-1">Características diferenciales del protocolo</a></li>
+<li><a href="#m%C3%A9trica">Métrica:</a></li>
+<li><a href="#eigrp-timers">EIGRP Timers</a></li>
+<li><a href="#load-balancing">Load Balancing</a></li>
+</ul>
+</li>
+<li><a href="#open-shortest-path-first">Open Shortest Path First</a>
+<ul>
+<li><a href="#caracter%C3%ADsticas-diferenciales-del-protocolo-2">Características diferenciales del protocolo</a></li>
+<li><a href="#%C3%A1reas-en-ospf">Áreas en OSPF</a></li>
+<li><a href="#ospf-vs-eigrp">OSPF vs EIGRP:</a></li>
+</ul>
+</li>
 <li><a href="#protocolo-de-internet">Protocolo de Internet</a>
 <ul>
 <li><a href="#interconexi%C3%B3n-entre-redes">Interconexión entre redes</a>
@@ -529,6 +570,408 @@ code {
 <h2 id="dise%C3%B1o-de-capacidad-de-una-red">Diseño de capacidad de una red</h2>
 <p>Desde un punto de vista de optimizar recursos lo ideal es que los enlaces tengan un nivel de congestión moderada. Una congestión excesiva provoca la pérdida y reenvío de paquetes, el fallo de protocolos de alto nivel y la frustración de los usuarios.</p>
 <p>La ausencia de congestión indica un sobredimensionamiento, lo cual podría significar un derroche de recursos. Hay que tener en cuenta las necesidades y la evolución de tráfico al o largo del día, lo razonable es dimensionar tomando en cuenta las necesidades en horas punta.</p>
+<h1 id="protocolos-din%C3%A1micos-de-enrutamiento">Protocolos dinámicos de enrutamiento</h1>
+<ul>
+<li>IGP (Interior Gateway Protocol): protocolos utilizados para compartir rutas en un determinado AS (Sistema Autónomo AKA Organización).
+<ul>
+<li>Algoritmo Distance Vector:
+<ul>
+<li>RIP (Routing Information Protocol)</li>
+<li>IGRP (Interior Gateway Routing Protocol)</li>
+<li>EIGRP (Enhanced Interior Gateway Routing Protocol)</li>
+</ul>
+</li>
+<li>Algoritmo Link State:
+<ul>
+<li>OSPF (Open Shortest Path First)</li>
+<li>IS-IS (Intermediate System to Intermediate System)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>EGP (Exterior Gateway Protocol): protocolos utilizados para compartir rutas entre AS’s.
+<ul>
+<li>Algoritmo Path Vector:
+<ul>
+<li>BGP (Border Gateway Protocol)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="igp-distance-vector">IGP: Distance Vector</h2>
+<ul>
+<li>Distance = metric
+<ul>
+<li>RIP: hop count</li>
+<li>IGRP: bandwith &amp; delay (ancho de banda y latencia)</li>
+<li>EIGRP: bandwith &amp; delay (ancho de banda y latencia)</li>
+</ul>
+</li>
+<li>Vector = dirección
+<ul>
+<li>RIP: next hop</li>
+<li>IGRP &amp; EIGRP: next hop</li>
+</ul>
+</li>
+</ul>
+<h3 id="funcionamiento-del-algoritmo">Funcionamiento del algoritmo:</h3>
+<ol>
+<li>Popular tabla de enrutamiento con las redes asociadas a las interfaces directamente conectadas.</li>
+<li>Localizar vecinos</li>
+<li>Informar mediante Route Updates la tabla de enrutamiento.</li>
+<li>Recibir Route Updates</li>
+<li>Comparar</li>
+<li>Actualizar tabla</li>
+</ol>
+<h3 id="caracter%C3%ADsticas-diferenciales-del-algoritmo">Características diferenciales del algoritmo:</h3>
+<ul>
+<li>Los routers configurados con protocolos que utilizan algoritmos de vector distancia <strong>SOLO</strong> intercambian información con sus vecinos (conectados directamente).</li>
+<li>Es decir, si la topología es A—B—C, A solo sabrá de C a través de lo que B le informó, no intercambiará información directamente con C, y viceversa. Esto es denominado enrutamiento por rumor por el hecho de que A debe confiar en que B le está compartiendo la información adecuada sobre C.</li>
+<li>Periódicamente se envían advertisements a TODOS los vecinos.</li>
+<li>Los advertisements (excepto rigurosas excepciones como full horizon, o poisong route) incluyen la TABLA DE ENRUTAMIENTO COMPLETA. Por lo que el router que reciba esta información, debe procesarla para encontrar los nuevos cambios y poder actualizar su tabla.</li>
+<li>Los routers DELEGAN la responsabilidad de esparcir la información de sus tablas de enrutamiento en sus vecinos.</li>
+</ul>
+<h3 id="timers">Timers:</h3>
+<ul>
+<li>Invalidation Timer: cuando se cae un enlace, un router espera un tiempo determinado por el protocolo denominado invalidation timer, hasta considerar que el destino que comunicaba ese enlace es unreachable (inalcanzable). Para setear la ruta como unreachable lo que hace es setear una distancia “infinita”, definida en los protocolos según la métrica utilizada. Por ej. En RIP son 16 saltos. Este hecho de setear las rutas “malas” con una métrica “infinita” es denominado Route Poisoning.</li>
+<li>Holdown Timer: explicado en Split Horizon with Poison Reverse</li>
+</ul>
+<h3 id="problemas-comunes">Problemas comunes</h3>
+<ul>
+<li>Problema 1:
+<ul>
+<li>Counting to Infinity:
+<ul>
+<li>Cuando se cae un enlace, el Router conectado directamente al mismo va a informar de esto en la próxima ronda de actualización, al mismo tiempo va a recibir una actualización de un vecino al que le dijo que lo podía alcanzar en la ronda anterior y va a actualizar la ruta pensando que ahora su vecino puede alcanzar ese camino siguiendo otro path. La métrica de la ruta va a ser n+1.</li>
+<li>A su vez, cuando su vecino reciba la información de que la ruta es mala, en la próxima ronda se lo va a volver a informar al router original generando un loop de intercambio de ruta mala ruta buena hasta que el valor de n+1 = un valor infinito (en RIP 16).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Solución 1:
+<ul>
+<li>Split Horizon Simple:
+<ul>
+<li>Define una regla fundamental “no informar rutas a vecinos que nos enseñaron esas rutas”. Esto es, en los advertisements se dejará de enviar la TABLA COMPLETA, ya que se quitarán de esta las rutas que nos ha enseñado ese vecino.</li>
+<li>Es decir, si D-A-B, A informará a D su tabla completa EXCEPTO las rutas que aprendió de D, e informará a B su tabla completa EXCEPTO las rutas que aprendió de B.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Solución 2:
+<ul>
+<li>Split Horizon con Poison Reverse:
+<ul>
+<li>Cuando un router detecta la caída de un enlace, esto es, cuando el invalidation timer llega a 0, este no esperará el tiempo de ronda para enviar la actualización de ruta (su tabla), directamente enviará un tipo especial de Route Update/advertisement denominado Triggered Partial Update, que SOLO contendrá la información de la ruta ahora inalcanzable. Sus vecinos que reciban esta información esperarán a la siguiente ronda para informarle a sus vecinos.</li>
+<li>Cuando su vecino recibe una Triggered Partial Update, SUSPENDE la función de Split Horizon para poder enviarle un ACK al mismo, este ACK no es un ACK en si mismo sino un reenvío del propio TPU.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Problema 2:
+<ul>
+<li>Redundancia:
+<ul>
+<li>Cuenta al infinito en routers adyacentes tras el envío de un TPU.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Solución:
+<ul>
+<li>Implementación de un Holdown timer, que define un tiempo durante el cual los vecinos que recibieron un TPU no escucharán actualizaciones sobre la ruta envenenada, asegurando así una convergencia segura.</li>
+</ul>
+</li>
+</ul>
+<h2 id="igp-link-state">IGP: Link State</h2>
+<p>Métrica: costo</p>
+<p>Costo calculado en base a bando de ancha, inversamente proporcional.</p>
+<ul>
+<li>Ventajas sobre los algoritmos Distance Vector:
+<ul>
+<li>Mejores tiempos de convergencia.</li>
+<li>Mejor evasión de loops.</li>
+</ul>
+</li>
+<li>Desventajas:
+<ul>
+<li>Complejidad</li>
+</ul>
+</li>
+</ul>
+<h3 id="caracter%C3%ADsticas-diferenciales-del-algoritmo">Características diferenciales del algoritmo:</h3>
+<ul>
+<li>Introducen el concepto de “adyacencias”, que refiere a vecinos que no están DIRECTAMENTE conectados a los mismos. Esto es los algoritmos vector distancia no era posible.</li>
+<li>Los advertisements pasan de llamarse Route Updates a llamarse LSA’s (Link State Advertisements).</li>
+<li>Un LSA está compuesto por:
+<ul>
+<li>Información del Router</li>
+<li>Enlaces conectados al mismo</li>
+<li>Estado de esos enlaces</li>
+</ul>
+</li>
+<li>Los routers reciben y envían información (en forma de LSA’s) a todos y desde todos los routers de la red (con los que formen adyacencia, es decir que corran el mismo protocolo y que cumplan alguna otra serie de aspectos definidos en el protocolo utilizado).</li>
+<li>La información de los LSA’s es almacenada en una base de datos que tiene cada router denominada Link State Database (LSDB).</li>
+<li>La información almacenada en la LSDB de cada router es LA MISMA. Lo que les permite tener un mapa completo de la topología de la red LS.</li>
+<li>Cada router aplica un algoritmo a la LSDB para crear las entradas correspondientes en la tabla de enrutamiento que corresponden a la mejor ruta a cada destino. (Camino mas corto primero SPF)</li>
+<li>Para descubrir vecinos se envían mensajes “Hello” en broadcast, y todos los routers de la red que corran el mismo protocolo pueden responder, formando así las adyacencias.</li>
+<li>Existe un intérvalo de 30 minutos donde los routers vuelven a enviar LSA’s para chequear que la información sobre la red está actualizada.</li>
+<li>Sin embargo esto no es más que una medida de protección ya que cuando ocurre un cambio en la red, como la caída de un enlace, esto es informado inmediatamente</li>
+<li>Cada vez que hay un cambio en la red el router que se entera envía un LSA informándolo a todos los routers de la red, estos actualizan su LSDB con esta nueva información, aplican el algoritmo SPF, en base a los resultados deciden si actualizar o no su tabla de enrutamiento.</li>
+</ul>
+<h3 id="algoritmo-aplicado-por-cada-router-a-su-lsdb">Algoritmo aplicado por cada router a su LSDB</h3>
+<ul>
+<li>Algoritmo SPF
+<ul>
+<li>Similar a rapid per vlan spanning tree. Se calculan los costos en base a los datos que se encuentran en la LSDB, y en base a estos resultados se elige el camino más corto, es decir el que tiene menos costo, es decir el que resulta en mayor ancho de banda y se agrega a la tabla de enrutamiento.</li>
+</ul>
+</li>
+</ul>
+<h2 id="routers-con-m%C3%BAltiples-protocolos-de-enrutamiento-din%C3%A1mico">Routers con múltiples protocolos de enrutamiento dinámico</h2>
+<p>Los routers elijen que con que rutas popular sus tablas basados en:</p>
+<ol>
+<li>AD (Distancia Administrativa)</li>
+<li>Métrica</li>
+</ol>
+<p>La AD es un valor de facto que determina que protocolo utilizar para determinar con que ruta popular una tabla de enrutamiento cuando en un router se están corriendo más de 1 protocolos, esto es, si hay dos rutas al mismo destino, el router tomará como primer criterio la distancia administrativa y priorizará la que tenga un valor de AD más bajo, esto es, utilizará el protocolo con la AD mas baja definida, a partir de esto, para determinar cual de las rutas al mismo destino colocar en la tabla de enrutamiento, se fijara en todas las que ese protocolo identificó y seleccionará la que tiene un valor de métrica más bajo.</p>
+<p><img src="./ad.png" alt="AD"></p>
+<h1 id="routing-information-protocol">Routing Information Protocol</h1>
+<p>Es un protocolo dinámico de enrutamiento que entra en la categoría de Interior Gateway Protocol (IGP; Protocolo de puerta de enlace interna). Utiliza un algoritmo del tipo Distance Vector)</p>
+<h2 id="caracter%C3%ADsticas-diferenciales-del-protocolo">Características diferenciales del protocolo</h2>
+<ul>
+<li>Existen dos versiones:
+<ul>
+<li>RIPv1:
+<ul>
+<li>No soporta CIDR</li>
+<li>No soporta VLSM</li>
+<li>Usa la dirección de broadcast 255.255.255.255</li>
+</ul>
+</li>
+<li>RIPv2:
+<ul>
+<li>Soporta CIDR</li>
+<li>Soporta VLSM</li>
+<li>Usa la dirección de multicast 224.0.0.9</li>
+<li>La ventaja de usar multicast en lugar de broadcast es que los dispositivos no tienen que desencapsular el datagrama para descartar el PDU. El descarte se da una capa más abajo.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Es simple.</li>
+<li>No es útil en redes muy grandes ya que tiene un límite de 15 saltos, 16 o más es considerado unreachable.</li>
+<li>Administrative Distance: 120</li>
+<li>Métrica – distancia: hops.</li>
+<li>El comando no auto summary desactiva la sumarización automática. Esto es, si no activamos esta opción el router va a advertir a sus vecinos la dirección classfull, no cada una de las subredes que caigan en ese rango.</li>
+</ul>
+<p>Los pasos que lleva a cabo el router cuando seteamos una net en el comando rip son los siguientes:</p>
+<ol>
+<li>router rip</li>
+<li>ver 2</li>
+<li>no aut</li>
+<li>network A.B.C.D.</li>
+<li>el router asume la dirección classfull</li>
+<li>chequea en su tabla de enrutamiento todas las direcciones que caigan en ese rango</li>
+<li>activa rip en esas interfaces y por las mismas envía las direcciones con su prefijo apropiado</li>
+<li>Si en una interfaz no hay otro router, pero aun así queremos que esa dirección sea informada por las demás interfaces pero no le queremos enviar advertisements al pedo tenemos que usar el comando:
+passive-interface <em>int</em> dentro de la conf del rip.</li>
+</ol>
+<p>EXTRA: para enviar advertisements sobre el gateway de last resort se usa default-information originate.</p>
+<p>Por defecto el max path de router rip v2 es 4, esto es, guarda en la tabla hasta 4 rutas a la misma dirección.</p>
+<p>Esto se puede cambiar con maximum-paths <em>num</em> pero no tiene mucho sentido</p>
+<p>La AD (distancia administrativa) también se puede cambiar, por defecto es 120, pero con:
+distance <em>distancia</em> se puede cambiar.</p>
+<p>Lo más importante de entender en la práctica al utilizar RIP es que la red classfull que indicamos en el comando network en la configuración del router RIP, no es la red que queremos advertir a los vecinos, es una dirección classfull, que indica que todas las redes conectadas al router, que caigan en ese rango, es decir, que aplicando el and lógico con la máscara de subred por defecto de la clase de la red indicada den como resultado la misma dirección, van a ser advertidas a los vecinos.</p>
+<h2 id="autenticaci%C3%B3n">Autenticación:</h2>
+<p>La autenticación en RIP se utiliza para prevenir que se introduzcan routers no permitidos en la red y afecten el funcionamiento de la misma influenciando las rutas advertidas por el protocolo de enrutamiento RIP.
+En global-config debemos definir una “key chain” que es una cadena de claves que podemos utilizar:</p>
+<ol>
+<li>#key chain <em>nombre_de_cadena</em></li>
+<li>#key <em>numero_de_clave</em></li>
+<li>#key-string <em>clave</em>
+Luego, debemos entrar en cada una de las interfaces que queremos utilizar rip y definir el protocolo de autenticación:</li>
+<li>#ip rip authentication mode md5
+Y por último, definimos la key-chain que queremos utilizar (en las interfaces):</li>
+<li>#ip rip authentication key-chain <em>nombre_de_cadena</em></li>
+</ol>
+<h2 id="rip-timers">RIP Timers</h2>
+<pre><code>Update: 30sec
+Invalid: 180sec
+Hold Down: 180sec
+</code></pre>
+<h1 id="enhanced-interior-gateway-protocol">Enhanced Interior Gateway Protocol</h1>
+<p>Es un protocolo dinámico de enrutamiento que entra en la categoría de Interior Gateway Protocol (IGP; Protocolo de puerta de enlace interna). Utiliza un algoritmo del tipo Distance Vector)</p>
+<h2 id="caracter%C3%ADsticas-diferenciales-del-protocolo">Características diferenciales del protocolo</h2>
+<ul>
+<li>Es un protocolo propietario de cisco, aunque Cisco publicó el código y ahora es open source, de todas formas pocos vendors adoptaron el protocolo por lo que se utiliza mayoritariamente en dispositivos cisco.</li>
+<li>Es considerado un protocolo de enrutamiento dinámico vector distancia avanzado/híbrido.</li>
+<li>Soporta VLSM y CIDR.</li>
+<li>No requiere mucho CPU ni memoria.</li>
+<li>El tiempo de convergencia es menor que en RIP.</li>
+<li>No tiene la limitación de 15 saltos que tiene RIP.</li>
+<li>Utiliza la dirección multicas 224.0.0.10</li>
+<li>Es el único IGP que puede realizar balanceo de carga de costo desigual (unequal-cost load-balancing).</li>
+<li>Por defecto realiza ECMP load-balancig sobre 4 paths como RIP.</li>
+<li>Administrative Distance: 90 (el IGP con la AD más baja)</li>
+<li>Métrica – distancia: ancho de banda y delay.</li>
+<li>Cuando se configura eigrp en un router hay que especificar el AS (sistema autónomo al que pertenece), esto es, todos los routers que queremos que formen adyacencias EIGRP deben pertenecer al mismo AS.</li>
+<li>El comando no auto summary desactiva la sumarización automática. Esto es, si no activamos esta opción el router va a advertir a sus vecinos la dirección classfull, no cada una de las subredes que caigan en ese rango.</li>
+<li>Cuando se activa EIGRP en un router este envía hello messages a la dirección multicast 224.0.0.10 para encontrar sus vecinos. Para formar una adyacencia con otro router, es decir, para considerarlo vecino se deben cumplir los siguientes requerimientos:
+<ul>
+<li>Los dos routers tienen que estar en la misma subred.</li>
+<li>Los dos routers tienen que tener el mismo ASN (authonomous system noumber).
+Si se cumplen estos requerimientos entonces el router se convierte en un vecino eigrp, y se pueden comenzar a intercambiar datos sobre la red.</li>
+</ul>
+</li>
+<li>Cada router que corre eigrp mantiene una tabla denominada neighbours table, que contiene información sobre el estado de los mismos.</li>
+<li>Para asegurarse que los eigrp neighbours están activos existe un hello timer que define cada cuanto se verifica esta conexión mediante el envío de hello messeages.</li>
+<li>Es considerado híbrido por el hecho de que la primera vez que dos routers se convierten en vecinos, intercambian su tabla de enrutamiento completa (full update), pero luego de esto solo intercambian actualizaciones parciales (partial update).</li>
+<li>Similar a la rip database, en eigrp los routers mantienen una Topology Table.</li>
+</ul>
+<p>Los pasos que lleva a cabo el router cuando seteamos una net en el comando eigrp son los siguientes:</p>
+<ol>
+<li>router eigrp <em>autonomous_system</em></li>
+<li>no aut</li>
+<li>network A.B.C.D. W.X.Y.Z #siendo W.X.Y.Z la wildcard mask, es opcional</li>
+<li>el router asume la dirección classfull #si no se especificó wildcard mask</li>
+<li>chequea en su tabla de enrutamiento todas las direcciones que caigan en ese rango</li>
+<li>activa eigrp en esas interfaces y por las mismas envía las direcciones con su prefijo apropiado</li>
+<li>Si en una interfaz no hay otro router, pero aun así queremos que esa dirección sea informada por las demás interfaces pero no le queremos enviar advertisements al pedo tenemos que usar el comando:
+passive-interface <em>int</em> dentro de la conf del eigrp.</li>
+</ol>
+<p>Por defecto el max path de router eigrp es 4, esto es, guarda en la tabla hasta 4 rutas a la misma dirección.</p>
+<p>Esto se puede cambiar con maximum-paths <em>num</em> pero no tiene mucho sentido</p>
+<p>La AD (distancia administrativa) también se puede cambiar, por defecto es 90 pero con:
+distance <em>distancia</em> se puede cambiar.</p>
+<p>Lo más importante de entender en la práctica al utilizar EIGRP es que la red classfull o con wildcard mask que indicamos en el comando network en la configuración del router EIGRP no es la red que queremos advertir a los vecinos, es una dirección que indica que todas las redes conectadas al router, que caigan en ese rango, es decir, que aplicando el and lógico con la máscara de subred por defecto de la clase de la red indicada (o con la wildcard mask) den como resultado la misma dirección, van a ser advertidas a los vecinos.</p>
+<h2 id="m%C3%A9trica">Métrica:</h2>
+<p>La métrica de EIGRP es una combinación de 4 factores:</p>
+<ol>
+<li>Bandwith
+<ul>
+<li>Determinado por el enlace con el ancho de banda más bajo en el camino al destino.</li>
+</ul>
+</li>
+<li>Delay
+<ul>
+<li>Determinado por la suma de todos los valores de delay en el camino al destino.</li>
+</ul>
+</li>
+<li>Interface load (carga sobre la interfaz)</li>
+<li>Interface reliability (fiabilidad de la interfaz)
+<ul>
+<li>3 y 4 no se usan porque si generalmente introducen inestabilidad.</li>
+</ul>
+</li>
+</ol>
+<p>Los valores de red, bandwith y delay que son recibidos por una interfaz en eigrp (el conjunto) es denominado “Reported Distance”. Una vez que el router recibe una reported Distance suma el delay hasta el router del que lo recibió, y compara el ancho de banda para generar una “Feasible distance” al destino.</p>
+<p>De las feasible Distance a un mismo destino calculadas a partir de las reported Distances que se reciben por los updates de los eigrp neighbours se elije la más baja para colocar en la tabla de enrutamiento, y esta es denominada “Succesor”. Sin embargo, las demás feasible distances son retenidas por el router en caso de que la succesor se caiga. Estas son denominadas feasible succesors. Es por esto que eigrp tiene una convergencia tan rápida.</p>
+<p>Cuando un router en eigrp no tiene ningún feasible successor y se cae un enlace debe solicitar información a sus vecinos para encontrar una nueva ruta, para esto utiliza un algoritmo denominado DUAL (Diffusing Update Algorithm).</p>
+<p>Este algoritmo consiste en que cuando se cae un enlace y no se cuenta con feasible successors se envían query messages a los vecinos para encontrar una nueva ruta. Los vecinos si tienen alguna forma de llegar al destino especificado responderán con un reply messeage indicando la nueva ruta.</p>
+<ul>
+<li>K1 y K3 son bandwith y delay. Por defecto vienen activados.</li>
+<li>El ancho de banda del enlace más lento en el camino más la suma de los valores de delay de todos los enlaces en el camino se utilizan para calcular la métrica.</li>
+<li>K2, K4 y K5 vienen apagados por defecto por tanto no se usan para calcular la métrica. Esto puede ser cambiado desde los ajustes.
+En EIGRP y OSPF cada Router tiene un identificador único que lo identifica en el AS. Este es determinado de la siguiente forma (de más prioridad a menos):</li>
+</ul>
+<ol>
+<li>Configuración manual</li>
+<li>Dirección IP más alta en una interface loopback.</li>
+<li>Dirección IP más alta en una interface física.</li>
+</ol>
+<p>El router ID se configura con:</p>
+<p>Router(config-router)#eigrp router-id A.B.C.D</p>
+<p>¿Cómo saber si un router es un feasible succesor al successor actual? La reported Distance del mismo debe ser menor a la feasible distance actual.</p>
+<p>Para modificar el comportamiento de eigrp lo mejor es modificar el delay de las interfaces.</p>
+<p>Esto se hace desde el menú de interfaz con el comando “delay <em>delay</em>”.</p>
+<h2 id="eigrp-timers">EIGRP Timers</h2>
+<ul>
+<li>Hello timer: cada cuanto se envían hello’s. El valor por defecto es 5 segundos.</li>
+<li>Hold: cuanto se espera un hello antes de considerar un neigbour como caído.</li>
+</ul>
+<h2 id="load-balancing">Load Balancing</h2>
+<p>EIGRP soporta load balancing con rutas de métrica desigual, esto es, por más que la métrica no sea igual se puede hacer balanceo de carga.</p>
+<p>Esto se logra modificando un valor denominado “variance” que por defecto viene en “1”.</p>
+<p>El algoritmo utilizado para determinar si se puede hacer load balancing consiste en multiplicar el valor de la varianza por la FD, si este valor es mayor que la feasible distance de un feasible successor, entonces se puede hacer load balancing.</p>
+<p>Como por defecto la varianza es 1, no se hace load balancing nunca (solo con equal cost paths), pero esto se puede cambiar fácil con el comando variance <em>multiplicador</em></p>
+<h1 id="open-shortest-path-first">Open Shortest Path First</h1>
+<p>Es un protocolo dinámico de enrutamiento que entra en la categoría de Interior Gateway Protocol (IGP; Protocolo de puerta de enlace interna). Utiliza un algoritmo del tipo Link State)</p>
+<h2 id="caracter%C3%ADsticas-diferenciales-del-protocolo">Características diferenciales del protocolo</h2>
+<ul>
+<li>Utiliza el algoritmo del “Camino más corto primero”, del científico de computadoras Edsger Dijkstra. AKA algoritmo de Dijkstra.</li>
+<li>Existen tres versiones de OSPF:
+<ul>
+<li>OSPFv1 (1989): actualmente no se utiliza.</li>
+<li>OSPFv2 (1998): utilizado en redes IPv4</li>
+<li>OSPFv3 (2008): utilizado en redes IPv6 (también soporta IPv4)</li>
+</ul>
+</li>
+<li>Los routers en OSPF almacenan información acerca de la red en forma de LSA’s (Link State Advertisements), los mismos son organizados en una estructura denominada LSDB (Link State Database)</li>
+<li>Los routers en OSPF difunden LSA’s por inundación hasta que todos los routers en el área OSPF desarrollan el mismo mapa de la red (LSDB)</li>
+</ul>
+<p>Funcionamiento básico de un router en una red OSPF que obtiene conocimiento de una nueva red:</p>
+<ol>
+<li>Se habilita OSPF en la interfaz correspondiente.</li>
+<li>El router crea un LSA para avisar a sus vecinos sobre la nueva red.</li>
+<li>El contenido básico del LSA es:
+<ul>
+<li>Router ID</li>
+<li>IP de la red</li>
+<li>Costo</li>
+</ul>
+</li>
+<li>El LSA es difundido por inundación en toda la red, hasta que todos los routers del área OSPF lo reciben.</li>
+<li>Esto resulta en que todos los routers compartan la misma LSDB.</li>
+<li>Una vez que el LSA fue añadido a la base de datos cada Router aplica el algoritmo de Dijkstra sobre la misma para determinar cual es el camino más conveniente y por tanto que ruta debe agregar a la tabla de enrutamiento.</li>
+</ol>
+<p>Los 3 pasos básicos para el compartimiento de LSAs y la determinación de la mejor ruta a una red destino son:</p>
+<ol>
+<li>Establecer vecindad: cada router debe establecer una vecindad con los routers conectados en el mismo segmento.</li>
+<li>Intercambiar LSAs con los routers vecinos.</li>
+<li>Calcular las mejores rutas al destino e insertarla en la tabla de enrutamiento.</li>
+</ol>
+<h2 id="%C3%A1reas-en-ospf">Áreas en OSPF</h2>
+<ul>
+<li>OSPF utiliza áreas para dividir la red.</li>
+<li>Las redes pequeñas pueden ser uni-área sin obtener efectos negativos en su performance.</li>
+<li>Sin embargo, en redes más grandes un diseño de red de una sola área puede tener efectos negativos como:
+<ul>
+<li>El algoritmo del camino más corto implica ocupar demasiadas ranuras de tiempo y poder de procesamiento.</li>
+<li>La LSDB ocupa demasiada memoria en cada router.</li>
+<li>Cada cambio en la red provoca demasiado tráfico de broadcast.</li>
+</ul>
+</li>
+<li>El área “0” es denominada “área backbone”.</li>
+<li>Un área es un conjunto de routers y enlaces que comparten la misma LSDB.</li>
+<li>El área backbone es un área especial a la que todas las demás áreas deben conectarse.</li>
+</ul>
+<p><img src="./OSPFAREAS.png" alt="ospfa"></p>
+<ul>
+<li>Los routers con todas sus interfaces en la misma área se denominan routers internos.</li>
+<li>Los routers con interfaces en múltiples áreas son denominados “área border routers” (ABRs).</li>
+<li>Los ABRs mantienen una LSDB separada por cada área a la que están conectados.</li>
+<li>Se recomienda conectar un ABR a un máximo de 2 áreas.</li>
+<li>Conectar un ABR a más de 3 áreas puede sobrecargar el router.</li>
+<li>Los routers conectados al área backbone son denominados backbone routers.</li>
+<li>Una ruta cuyo destino se encuentra en la misma área OSPF, es denominada “intra-area route”.</li>
+<li>Una ruta con un destino en un área OSPF distinta es denominada “interarea route”.</li>
+<li>Las áreas en OSPF deben ser contiguas, esto es, una misma área no pude estar dividida en dos segmentos físicamente separados.</li>
+<li>Todas las áreas en OSPF deben tener al menos un ABR conectado al área backbone.</li>
+<li>Las interfaces de OSPF que se encuentran en la misma subred deben estar en la misma área.</li>
+<li>Cuando un router informa a los demás de su área sobre el Gateway de last resort (internet) se convierte en un ASBR (autonomous system Boundary router)</li>
+</ul>
+<h2 id="ospf-vs-eigrp">OSPF vs EIGRP:</h2>
+<ul>
+<li>El PID no es como el AS number de EIGRP, no es necesario que matchee entre los routers para que se puedan establecer vecindades.</li>
+<li>El comando network funciona igual que en EIGRP</li>
+<li>El comando passive-interface funciona igual que en EIGRP</li>
+<li>El comando default-information originate funciona igual que en EIGRP</li>
+<li>El RID se establece igual que en EIGRP</li>
+<li>Para definir manualmente el RID no es necesario especificar el protocolo como en EIGRP,  simplemente se utiliza (config-router)#router-id A.B.C.D</li>
+<li>Luego de definir manualmente el RID hay que reiniciar el router o los procesos OSPF con #clear ip ospf Process</li>
+<li>OSPF no soporta unequal-cost load balancing, pero si soporta ECMP load balancing (equal cost multiple path).</li>
+</ul>
 <h1 id="protocolo-de-internet">Protocolo de Internet</h1>
 <p>En el modelo de Internet, el principal protocolo de red es el Protocolo de Internet (IP). La versión actual y dominante es la versión 4 o IPv4, la siguiente generación es IPv6 que no se implementa mucho en la actualidad.</p>
 <h2 id="interconexi%C3%B3n-entre-redes">Interconexión entre redes</h2>
@@ -655,6 +1098,14 @@ Este campo es necesario debido a que las tablas de encaminamiento en Internet se
 <p>La cabecera de un datagrama IPv4 está compuesta de dos partes: una parte fija y una parte variable. La parte fija tiene una longitud de 20 bytes. La parte variable comprende las opciones que pueden ocupar un máximo de 40 bytes.</p>
 <p>Las opciones, como su nombre implica, no son requeridas para un datagrama. Se pueden utilizar para probar y depurar la red. Aunque las opciones no son una parte obligatoria de la cabecera de un datagrama IPv4, el software sí requiere el procesamiento de las opciones. Esto significa que todas las implementaciones deben ser capaces de tratar las opciones cuando se encuentren presentes en la cabecera.</p>
 <p><img src="./opc.png" alt="opc"></p>
+<ul>
+<li><em>No operación</em>: la opción de no operación ocupa 1 byte y se utiliza como un elemento de relleno entre opciones, por el hecho de que las tramas siempre deben tener una longitud múltiplo de 4 octetos.</li>
+<li><em>Fin de opción</em>: esta opción que ocupa 1 byte se utiliza como relleno al final del campo opciones.</li>
+<li><em>Registrar ruta</em>: esta opción se utiliza para registrar los encaminadores de Internet que tratan al datagrama. Puede listar hasta 9 direcciones de encaminadores. Se utiliza para depuración y gestión. (Creo que lo usa tracert)</li>
+<li><em>Camino estricto desde el origen</em>: este campo lo utiliza el origen para predeterminar un camino para el viaje del datagrama a través de Internet. Esta característica puede ser útil para varias cosas. El emisor puede elegir un camino con un tipo específico	de servicio, como retardo mínimo o máxima productividad. De igual forma, puede elegir un camino que sea más seguro o más fiable. Por ejemplo, un emisor puede elegir un camino para que el datagrama no viaje por la red de un competidor. Si un datagrama especifica una ruta desde el origen, todos los encaminadores definidos en la opción deben ser visitados por el datagrama. Un encaminador no debe ser visitado si su dirección IPv4 no se encuentra listada en el datagrama. Si el datagrama visita un encaminador que no se encuentra en la lista, el datagrama se descarta y se envía un mensaje de error. Si el datagrama llega al destino y algunas entradas no fueron visitadas, también será descartado y enviado el mensaje de error.</li>
+<li><em>Camino relajado desde el origen</em>:  este campo es similar al anterior, pero es menos rígido. Cada encaminador de la lista debe ser visitado, pero el datagrama puede visitar también otros encaminadores.</li>
+<li><em>Marca de tiempo</em>: la marca de tiempo se utiliza para registrar la hora de procesamiento de un encaminador. Este tiempo se expresa en milisegundos desde la media noche utilizando el tiempo Universal o de Greenwich. Saber la hora a la que se procesa un datagrama puede ayudar a los usuarios y administradores a conocer el funcionamiento de los encaminadores en Internet. Se puede estimar el tiempo que tarda un datagrama en ir de un encaminador al otro. Se dice estimar, debido a que todos los encaminadores pueden utilizar tiempo Universal, sus relojes locales pueden estar desincronizados.</li>
+</ul>
 
 </body>
 </html>
