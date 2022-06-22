@@ -6,6 +6,9 @@
 - [LANs](#lans)
   - [Topología lógica](#topología-lógica)
   - [VLANs](#vlans)
+  - [DHCP](#dhcp)
+    - [Villa María](#villa-maría)
+      - [Router WiFi](#router-wifi)
 
 
 # Consigna
@@ -233,4 +236,37 @@ Lo primero que se necesita para que esto funcione correctamente es definir un en
 >  ip address 10.1.4.1 255.255.255.0
 > ```
 > Esta configuración se replicó tanto en Bariloche como en Mendoza.
+
+## DHCP
+Para la asignación de direcciones dinámica definí 3 esquemas distintos:
+- En Villa María un servidor DHCP con dos interfaces Ethernet, una en la VLAN 2 y otra en la VLAN 3, y para asignar direcciones a la VLAN 4 definí una DHCP-pool en el Router.
+- En Bariloche configuré la asignación de direcciones dinámica de las 3 VLANs directamente desde el router, esto es, con 3 DHCP-pools, una para cada VLAN.
+- En Mendoza utilicé un servidor DHCP en cada VLAN.
+
+### Villa María
+Lo primero que tuve que hacer cuando puse el servidor DHCP para la VLAN 2 y 3 fue configurar los puertos del switch a los que conecté cada una de las interfaces de este servidor para que pertenezcan a las VLAN 3 y 4 respectivamente.
+Una vez hecho esto configuré el servicio DHCP en cada interfaz de la siguiente manera, para que asigne direcciones IP dinámicamente a partir de la décima dirección de cada red: <br/>
+![DHCP_VL2_VM](./DHCP_VL2_VM.png) <br/>
+![DHCP_VL3_VM](./DHCP_VL3_VM.png) <br/>
+Además, definí estáticamente el IP de cada interfaz del servidor DHCP como la segunda de la red a la que pertenece. <br/>
+
+En cuanto a la VLAN 4 la configuración de la DHCP-pool en el router fue la siguiente, donde excluí las primeras 10 direcciones de la red para que no entre en conflicto con la dirección del Router ya que las direcciones IP deben ser únicas, además, esto me permite flexibilidad si el día de mañana deseo asignar alguna otra IP de forma estática, ya sea tanto para un servidor como para una impresora o cualquier otro dispositivo que lo requiera:
+> ``` code	
+> ip dhcp excluded-address 10.1.4.1 10.1.4.10
+> !
+> ip dhcp pool VLAN4
+>  network 10.1.4.0 255.255.255.0
+>  default-router 10.1.4.1
+> !
+> ```
+> Resultando en: <br/>
+> ![DHCP_VL4_VM](./DHCP_VL4_VM.png) <br/>
+
+#### Router WiFi
+Una cosa que me faltó aclarar es que para que los dispositivos que se encuentran en la VLAN 4 reciban información de red dinámicamente del servidor DHCP configurado en el Router, el Router WiFi al que se conectan debe estar funcionando en modo Bridge, esto se hace deshabilitando el DHCP del mismo y conectándolo al Switch mediante un puerto LAN y no mediante el puerto WAN. <br/>
+Esto lo hice desde la GUI del mismo en la solapa de configuración-configuración básica. <br/>
+Además definí un SSID denominado 'villamaria' y una contraseña bajo el protocolo WPA2 que definí como 'redes2022'. <br/>
+Una vez configurado el Router WiFi en modo Bridge procedí a conectar tanto la tablet como la notebook al mismo.
+
+De este modo la configuración DHCP de Villa María fue exitosa y todos los dispositivos en esta locación recibieron información de la red (Dirección IP, DG, etc.)
 
