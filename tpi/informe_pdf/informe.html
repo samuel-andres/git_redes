@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>informe.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<!-- omit in toc -->
+<h1 id="datos">Datos</h1>
+<ul>
+<li>Nombre: Samuel Andrés</li>
+<li>Legajo: 12953</li>
+<li>Materia: Redes de Información</li>
+<li>TP: Trabajo Práctico Integrador</li>
+<li>UTN-FRVM - 2022</li>
+</ul>
+<div style="page-break-after: always"></div>
+<!-- omit in toc -->
+<h1 id="%C3%ADndice">Índice</h1>
+<ul>
+<li><a href="#consigna">Consigna</a></li>
+<li><a href="#wan">WAN</a>
+<ul>
+<li><a href="#configuraci%C3%B3n-y-vista-l%C3%B3gica">Configuración y vista lógica</a></li>
+<li><a href="#vista-f%C3%ADsica">Vista física</a></li>
+</ul>
+</li>
+<li><a href="#lans">LANs</a>
+<ul>
+<li><a href="#vista-l%C3%B3gica">Vista lógica</a></li>
+<li><a href="#vlans">VLANs</a></li>
+<li><a href="#dhcp">DHCP</a>
+<ul>
+<li><a href="#villa-mar%C3%ADa">Villa María</a>
+<ul>
+<li><a href="#router-wifi">Router WiFi</a></li>
+</ul>
+</li>
+<li><a href="#bariloche">Bariloche</a></li>
+<li><a href="#mendoza">Mendoza</a></li>
+</ul>
+</li>
+<li><a href="#tablas-de-resumen">Tablas de resumen</a>
+<ul>
+<li><a href="#villa-mar%C3%ADa-1">Villa María</a></li>
+<li><a href="#bariloche-1">Bariloche</a></li>
+<li><a href="#mendoza-1">Mendoza</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#configuraci%C3%B3n-de-protocolo-din%C3%A1mico-de-enrutamiento">Configuración de protocolo dinámico de enrutamiento</a></li>
+<li><a href="#vista-l%C3%B3gica-total">Vista Lógica Total</a></li>
+</ul>
+<div style="page-break-after: always"></div>
+<h1 id="consigna">Consigna</h1>
+<ul>
+<li>Interconectar 3 Redes LAN de una compañía con sede en 3 ciudades diferentes:
+<ul>
+<li>Villa María</li>
+<li>Bariloche</li>
+<li>Mendoza</li>
+</ul>
+</li>
+<li>La conexión entre las Redes LAN debe ser mediante WAN Frame Relay</li>
+<li>Cada red LAN debe tener:
+<ul>
+<li>3 VLANS:
+<ul>
+<li>VLAN2: 2 PCS</li>
+<li>VLAN3: 1 PC y una impresora</li>
+<li>VLAN4: 1 Notebook y 1 Tablet (Conexión Wireless mediante un Router WiFi WRT-300N)</li>
+<li>Asignación de IPS mediante DHCP</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div style="page-break-after: always"></div>
+<h1 id="wan">WAN</h1>
+<h2 id="configuraci%C3%B3n-y-vista-l%C3%B3gica">Configuración y vista lógica</h2>
+<p>Para establecer la conexión entre las 3 ciudades, debíamos utilizar WAN Frame-Relay. Para esto establecimos 3 circuitos virtuales formando una topología full-mesh entre los 3 routers.</p>
+<p>Cada uno de los routers fue conectado mediante un cable serial a la nube frame relay del ISP. En la interfaz serial de cada uno de estos routers se configuraron dos interfaces virtuales con encapsulamiento frame-relay. De este modo la conexión lógica entre los 3 routers es directa (PaP).</p>
+<table>
+<thead>
+<tr>
+<th><strong>Router</strong></th>
+<th><strong>Interfaz Física</strong></th>
+<th><strong>Interfaz Virtual</strong></th>
+<th><strong>Dirección de capa 2 (DLCI)</strong></th>
+<th><strong>Dirección de capa 3 (IPv4)</strong></th>
+<th><strong>Dirección de red</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RVM</strong></td>
+<td>serial 0/1/0</td>
+<td>s 0/1/0.102</td>
+<td>102</td>
+<td>10.0.1.1/24</td>
+<td>10.0.1.0/24</td>
+</tr>
+<tr>
+<td><strong>RVM</strong></td>
+<td>serial 0/1/0</td>
+<td>s 0/1/0.103</td>
+<td>103</td>
+<td>10.0.3.1/24</td>
+<td>10.0.3.0/24</td>
+</tr>
+<tr>
+<td><strong>RBR</strong></td>
+<td>serial 0/1/0</td>
+<td>s 0/1/0.201</td>
+<td>201</td>
+<td>10.0.1.2/24</td>
+<td>10.0.1.0/24</td>
+</tr>
+<tr>
+<td><strong>RBR</strong></td>
+<td>serial 0/1/0</td>
+<td>s 0/1/0.203</td>
+<td>203</td>
+<td>10.0.2.2/24</td>
+<td>10.0.2.0/24</td>
+</tr>
+<tr>
+<td><strong>RMZ</strong></td>
+<td>serial 0/1/0</td>
+<td>s 0/1/0.301</td>
+<td>301</td>
+<td>10.0.3.2/24</td>
+<td>10.0.3.0/24</td>
+</tr>
+<tr>
+<td><strong>RMZ</strong></td>
+<td>serial 0/1/0</td>
+<td>s 0/1/0.302</td>
+<td>302</td>
+<td>10.0.2.1/24</td>
+<td>10.0.2.0/24</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em><strong>Vista lógica</strong></em> <br/>
+<img src="fr_logtop.png" alt="fr_logtop"></p>
+</blockquote>
+<div style="page-break-after: always"></div>
+<p>Para que esto funcione tuvimos que también configurar los circuitos virtuales (PVCs) en la nube Frame Relay:</p>
+<blockquote>
+<p><em><strong>Circuitos virtuales</strong></em> <br/>
+<img src="./fr_pvcs.png" alt="fr_pvcs"></p>
+</blockquote>
+<p>La configuración de las interfaces seriales involucradas en cada uno de los routers fueron las siguientes:</p>
+<blockquote>
+<p>RVM:</p>
+<pre class="hljs"><code><div>interface Serial0/1/0
+ no ip address
+ encapsulation frame-relay
+!
+interface Serial0/1/0.102 point-to-point
+ ip address 10.0.1.1 255.255.255.0
+ frame-relay interface-dlci 102
+ clock rate 2000000
+!
+interface Serial0/1/0.103 point-to-point
+ ip address 10.0.3.1 255.255.255.0
+ frame-relay interface-dlci 103
+ clock rate 2000000
+!
+</div></code></pre>
+<p>RBR:</p>
+<pre class="hljs"><code><div>interface Serial0/1/0
+ no ip address
+encapsulation frame-relay
+!
+interface Serial0/1/0.201 point-to-point
+ ip address 10.0.1.2 255.255.255.0 
+ frame-relay interface-dlci 201
+ clock rate 2000000
+!
+interface Serial0/1/0.203 point-to-point
+ ip address 10.0.2.2 255.255.255.0
+ frame-relay interface-dlci 203
+ clock rate 2000000
+!
+</div></code></pre>
+<p>RMZ:</p>
+<pre class="hljs"><code><div>interface Serial0/1/0
+ no ip address
+ encapsulation frame-relay
+!
+interface Serial0/1/0.301 point-to-point
+ ip address 10.0.3.2 255.255.255.0
+ frame-relay interface-dlci 301
+ clock rate 2000000
+!
+interface Serial0/1/0.302 point-to-point
+ ip address 10.0.2.1 255.255.255.0
+ frame-relay interface-dlci 302
+ clock rate 2000000
+!
+</div></code></pre>
+</blockquote>
+<div style="page-break-after: always"></div>
+<h2 id="vista-f%C3%ADsica">Vista física</h2>
+<p>En el mapa de Argentina la topología física se ve de la siguiente manera, considerando que la nube Frame Relay es una representación lógica:</p>
+<blockquote>
+<p><img src="./WAN_full_phy_top.png" alt="WAN_full_phy_top.png"></p>
+</blockquote>
+<p>Luego, dentro de cada oficina, en cada edificio de cada ciudad, se encuentra un habitación de cableado con un RACK, donde, entre otras cosas, está el Router, con la conexión serial:</p>
+<blockquote>
+<p><em><strong>Villa María</strong></em> <br/>
+<img src="./WAN_wc_ph_top_VM.png" alt="RAC_VM"> <br/></p>
+</blockquote>
+<div style="page-break-after: always"></div>
+<blockquote>
+<p><em><strong>Bariloche</strong></em> <br/>
+<img src="./WAN_wc_ph_top_BR.png" alt="RAC_BR"> <br/>
+<em><strong>Mendoza</strong></em> <br/>
+<img src="./WAN_wc_ph_top_MZ.png" alt="RAC_MZ"> <br/></p>
+</blockquote>
+<div style="page-break-after: always"></div>
+<h1 id="lans">LANs</h1>
+<h2 id="vista-l%C3%B3gica">Vista lógica</h2>
+<p>La vista lógica de la LAN de Villa María se ve de la siguiente manera: <br/></p>
+<blockquote>
+<p><img src="./vm_logtop.png" alt="vm_logtop"></p>
+</blockquote>
+<div style="page-break-after: always"></div>
+<p>La vista lógica de la LAN de Bariloche se ve de la siguiente manera: <br/></p>
+<blockquote>
+<p><img src="./br_logtop.png" alt="br_logtop"></p>
+</blockquote>
+<p>La vista lógica de la LAN de Mendoza se ve de la siguiente manera: <br/></p>
+<blockquote>
+<p><img src="./mz_logtop.png" alt="mz_logtop"></p>
+</blockquote>
+<div style="page-break-after: always"></div>
+<h2 id="vlans">VLANs</h2>
+<p>Lo primero fue crear las VLANs en cada switch:</p>
+<blockquote>
+<p>VM</p>
+<pre class="hljs"><code><div>SW1-VM(config)#vlan 2
+SW1-VM(config-vlan)#name VLAN2
+SW1-VM(config)#vlan 3
+SW1-VM(config-vlan)#name VLAN3
+SW1-VM(config)#vlan 4
+SW1-VM(config-vlan)#name VLAN4
+</div></code></pre>
+<p>BR</p>
+<pre class="hljs"><code><div>SW1-BR(config)#vlan 2
+SW1-BR(config-vlan)#name VLAN2
+SW1-BR(config)#vlan 3
+SW1-BR(config-vlan)#name VLAN3
+SW1-BR(config)#vlan 4
+SW1-BR(config-vlan)#name VLAN4
+</div></code></pre>
+<p>MZ</p>
+<pre class="hljs"><code><div>SW1-MZ(config)#vlan 2
+SW1-MZ(config-vlan)#name VLAN2
+SW1-MZ(config)#vlan 3
+SW1-MZ(config-vlan)#name VLAN3
+SW1-MZ(config)#vlan 4
+SW1-MZ(config-vlan)#name VLAN4
+</div></code></pre>
+</blockquote>
+<p>Una vez creadas las VLANs lo siguiente fue asignar cada puerto (configurándolo en modo acceso) a la VLAN correspondiente:</p>
+<blockquote>
+<p><em><strong>VM</strong></em></p>
+<pre class="hljs"><code><div>interface FastEthernet0/1
+ switchport access vlan 2
+ switchport mode access
+!
+interface FastEthernet0/2
+ switchport access vlan 2
+ switchport mode access
+!
+interface FastEthernet0/3
+ switchport access vlan 3
+ switchport mode access
+!
+interface FastEthernet0/4
+ switchport access vlan 3
+ switchport mode access
+!
+interface FastEthernet0/5
+ switchport access vlan 4
+ switchport mode access
+</div></code></pre>
+<p>Además, por seguridad, desactivé todas las interfaces del Switch que no se utilizan. <br/>
+<em><strong>Resultando en:</strong></em> *ignorar DHCP incorporado más adelante <br/>
+<img src="./sh_int_st_VM.png" alt="sh_int_st_VM"> <br/>
+<em><strong>En Bariloche y Mendoza las configuraciones fueron exactamente las mismas, por lo que se muestra la VLAN DB en cada uno de estos:</strong></em> <br/>
+<em><strong>Bariloche</strong></em> <br/>
+<img src="./vl_db_br.png" alt="vl_db_br"> <br/>
+<em><strong>Mendoza</strong></em> <br/>
+<img src="./vl_db_mz.png" alt="vl_db_mz"> <br/></p>
+</blockquote>
+<p>Con estas configuraciones, en cada LAN hay conexión en capa 2, entre dispositivos que se encuentran en la misma VLAN, conectados al mismo Switch.</p>
+<p>Ahora, lo que se quiere lograr es conectividad total, para esto empezamos por definir una subred para cada VLAN, el esquema de direcciones que establecimos en clase fue:</p>
+<blockquote>
+<p><em><strong>10.LOC.VLAN.HOST</strong></em> <br/>
+Siendo: <br/>
+LOC 1 = Villa María <br/>
+LOC 2 = Bariloche <br/>
+LOC 3 = Mendoza <br/>
+VLAN = 2,3,4 <br/>
+HOST = GW .1 <br/>
+<br/>
+Es decir, direcciones clase A con un largo de prefijo de 24 bits.</p>
+</blockquote>
+<p>Lo primero que se necesita para que esto funcione correctamente es definir un enlace troncal entre el Switch y el Router, para esto utilizamos la técnica denominada &quot;Router-on-a-Stick&quot; que consiste en configurar una interfaz virtual en el Router para cada una de las vlans que se encuentran en la red, y configurar cada una de estas interfaces virtuales para que envíen tramas con el TAG correspondiente por el enlace troncal.</p>
+<blockquote>
+<p><em><strong>Configuración del enlace troncal en el Switch:</strong></em></p>
+<pre class="hljs"><code><div>interface GigabitEthernet0/1
+ description #AL ROUTER#
+ switchport trunk native vlan 1001
+ switchport trunk allowed vlan 2-4
+ switchport mode trunk
+</div></code></pre>
+<p>Resultando en: <br/>
+<img src="./sh_int_tr_VM.png" alt="sh_int_tr_VM"> <br/>
+Como se puede observar, definí como VLAN nativa una VLAN que no se utiliza, para prevenir el tráfico sin tags por el enlace troncal, además, solo permití el trafico de las VLANs existentes, lo que significa que si se crea una nueva VLAN no se permitirá automáticamente en el enlace troncal, por lo que el administrador de red tiene un control más estricto sobre la misma.
+Esta misma configuración fue replicada tanto en el switch de Bariloche como en el switch Mendoza. <br/>
+<em><strong>Configuración de interfaces virtuales en el Router:</strong></em>
+Para permitir la interconexión entre dispositivos que se encuentran en distintas VLANs, los mismos deben estar separados tanto en capa 2 como en capa 3, y la interconexión se da mediante un Router, con varias interfaces virtuales que funcionan como puerta de enlace predeterminada para cada una de estas redes por las que encamina el tráfico con el TAG de la VLAN correspondente. <br/>
+La configuración necesaria en cada interfaz virtual es: levantar la interfaz física, definir el protocolo de encapsulamiento (802.1q) e indicar el TAG correspondiente, y por último definir la dirección IP de la misma (y máscara), que se acordó sería el primero de cada red. <br/>
+Resultando en la siguiente configuración: <br/></p>
+<pre class="hljs"><code><div>interface GigabitEthernet0/0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0/0.2
+ encapsulation dot1Q 2
+ ip address 10.1.2.1 255.255.255.0
+!
+interface GigabitEthernet0/0/0.3
+ encapsulation dot1Q 3
+ ip address 10.1.3.1 255.255.255.0
+!
+interface GigabitEthernet0/0/0.4
+ encapsulation dot1Q 4
+ ip address 10.1.4.1 255.255.255.0
+</div></code></pre>
+<p>Esta configuración se replicó tanto en Bariloche como en Mendoza.</p>
+</blockquote>
+<div style="page-break-after: always"></div>
+<h2 id="dhcp">DHCP</h2>
+<p>Para la asignación de direcciones dinámica definí 3 esquemas distintos:</p>
+<ul>
+<li>En Villa María un servidor DHCP con dos interfaces Ethernet, una en la VLAN 2 y otra en la VLAN 3, y para asignar direcciones a la VLAN 4 definí una DHCP-pool en el Router.</li>
+<li>En Bariloche configuré la asignación de direcciones dinámica de las 3 VLANs directamente desde el router, esto es, con 3 DHCP-pools, una para cada VLAN.</li>
+<li>En Mendoza utilicé un servidor DHCP en cada VLAN.</li>
+</ul>
+<h3 id="villa-mar%C3%ADa">Villa María</h3>
+<p>Lo primero que tuve que hacer cuando puse el servidor DHCP para la VLAN 2 y 3 fue configurar los puertos del switch a los que conecté cada una de las interfaces de este servidor para que pertenezcan a las VLAN 3 y 4 respectivamente.
+Una vez hecho esto configuré el servicio DHCP en cada interfaz de la siguiente manera, para que asigne direcciones IP dinámicamente a partir de la décima dirección de cada red: <br/>
+<img src="./DHCP_VL2_VM.png" alt="DHCP_VL2_VM"> <br/>
+<img src="./DHCP_VL3_VM.png" alt="DHCP_VL3_VM"> <br/>
+Además, definí estáticamente el IP de cada interfaz del servidor DHCP como la segunda de la red a la que pertenece. <br/></p>
+<p>En cuanto a la VLAN 4 la configuración de la DHCP-pool en el router fue la siguiente, donde excluí las primeras 10 direcciones de la red para que no entre en conflicto con la dirección del Router ya que las direcciones IP deben ser únicas, además, esto me permite flexibilidad si el día de mañana deseo asignar alguna otra IP de forma estática, ya sea tanto para un servidor como para una impresora o cualquier otro dispositivo que lo requiera:</p>
+<blockquote>
+<pre class="hljs"><code><div>ip dhcp excluded-address 10.1.4.1 10.1.4.10
+!
+ip dhcp pool VLAN4
+ network 10.1.4.0 255.255.255.0
+ default-router 10.1.4.1
+!
+</div></code></pre>
+<p>Resultando en: <br/>
+<img src="./DHCP_VL4_VM.png" alt="DHCP_VL4_VM"> <br/></p>
+</blockquote>
+<div style="page-break-after: always"></div>
+<h4 id="router-wifi">Router WiFi</h4>
+<p>Una cosa que me faltó aclarar es que para que los dispositivos que se encuentran en la VLAN 4 reciban información de red dinámicamente del servidor DHCP configurado en el Router, el Router WiFi al que se conectan debe estar funcionando en modo Bridge, esto se hace deshabilitando el DHCP del mismo y conectándolo al Switch mediante un puerto LAN y no mediante el puerto WAN. <br/>
+Esto lo hice desde la GUI del mismo en la solapa de configuración-configuración básica. <br/>
+Además definí un SSID denominado 'villamaria' y una contraseña bajo el protocolo WPA2 que definí como 'redes2022'. <br/>
+Una vez configurado el Router WiFi en modo Bridge procedí a conectar tanto la tablet como la notebook al mismo.</p>
+<p>De este modo la configuración DHCP de Villa María fue exitosa y todos los dispositivos en esta locación recibieron información de la red (Dirección IP, DG, etc.)</p>
+<blockquote>
+<p><em><strong>Desactivando DHCP</strong></em> <br/>
+<img src="./dhcp_dis_bridge_vm.png" alt="dhcp_dis"> <br/></p>
+</blockquote>
+<div style="page-break-after: always"></div>
+<blockquote>
+<p><em><strong>Configurando SSID</strong></em> <br/>
+<img src="./ssid_bridge_vm.png" alt="ssid"> <br/>
+<em><strong>Configurando WPA2</strong></em> <br/>
+<img src="./wpa2_bridge_vm.png" alt="wpa2"> <br/></p>
+</blockquote>
+<p>Esta configuración se replicó tanto en Mendoza como en Bariloche cambiando el SSID por el de la localidad correspondiente.</p>
+<div style="page-break-after: always"></div>
+<h3 id="bariloche">Bariloche</h3>
+<p>Como en bariloche no utilicé servidores DHCP físicos sino que configure 3 DHCP-pools en el Router, lo único que tuve que hacer fue crearlas y excluir las direcciones correspondientes:</p>
+<ul>
+<li>VLAN2: IP del Router</li>
+<li>VLAN3: IP del Router e IP de la Impresora</li>
+<li>VLAN4: IP del Router
+La configuración fue la siguiente:</li>
+</ul>
+<pre class="hljs"><code><div>ip dhcp excluded-address 10.2.2.1 10.2.2.10
+ip dhcp excluded-address 10.2.3.1 10.2.3.10
+ip dhcp excluded-address 10.2.4.1 10.2.4.10
+!
+ip dhcp pool VLAN2
+ network 10.2.2.0 255.255.255.0
+ default-router 10.2.2.1
+ip dhcp pool VLAN3
+ network 10.2.3.0 255.255.255.0
+ default-router 10.2.3.1
+ip dhcp pool VLAN4
+ network 10.2.4.0 255.255.255.0
+ default-router 10.2.4.1
+</div></code></pre>
+<blockquote>
+<p>Resultando en las siguientes DHCP-pools: <br/>
+<img src="./dhcp_pools_br.png" alt="DHCP_pools_BR"></p>
+</blockquote>
+<p>De esta manera todos los dispositivos en la red de Bariloche recibieron su IP correspondiente en el rango .10-.254</p>
+<div style="page-break-after: always"></div>
+<h3 id="mendoza">Mendoza</h3>
+<p>Por último, en Mendoza configuré 3 servidores físicos, cada uno con una única interfaz física conectada a la VLAN correspondiente en la que asignará IPs. Muestro solo la parte física ya que la configuración es igual a lo hecho en Villa María con el servidor DHCP de las VLANs 2 y 3 <br/>
+<img src="./DHCP_svs_mz.png" alt="DHCP_svs_mz"></p>
+<p>*La IP de las impresoras, tanto en BR, MZ y VM las configuré estáticamente.</p>
+<p>Con estas configuraciones, la conectividad es TOTAL, dentro de cada oficina, es decir, los dispositivos entre distintas VLANs que se encuentran en al misma oficina se pueden comunicar a través del Router, solo faltaría configurar las rutas para que los Routers se informen de las redes que conocen y puedan popular su tabla de enrutamiento para permitir la conectividad total entre las 3 ciudades. <br/>
+Pero primero, unas tablas en modo de resumen sobre la configuración realizada en cada ciudad.</p>
+<div style="page-break-after: always"></div>
+<h2 id="tablas-de-resumen">Tablas de resumen</h2>
+<h3 id="villa-mar%C3%ADa">Villa María</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Nombre</strong></th>
+<th><strong>Modelo</strong></th>
+<th><strong>Interfaz</strong></th>
+<th><strong>Dirección IP</strong></th>
+<th><strong>Dirección de Red</strong></th>
+<th><strong>Puerto del Switch</strong></th>
+<th><strong>VLAN</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RVM</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.2</td>
+<td>10.1.2.1/24</td>
+<td>10.1.2.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>2 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>RVM</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.3</td>
+<td>10.1.3.1/24</td>
+<td>10.1.3.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>3 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>RVM</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.4</td>
+<td>10.1.4.1/24</td>
+<td>10.1.4.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>4 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>PC1-VM</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.1.2.0/24</td>
+<td>fa0/1 (ACCESS)</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PC2-VM</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.1.2.0/24</td>
+<td>fa0/2 (ACCESS)</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PC3-VM</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.1.3.0/24</td>
+<td>fa0/3 (ACCESS)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>Pr1-VM</strong></td>
+<td>Printer</td>
+<td>Fa0</td>
+<td>10.1.3.3/24</td>
+<td>10.1.3.0/24</td>
+<td>fa0/4 (ACCESS)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>WiFi-VM</strong></td>
+<td>WRT-300N</td>
+<td>Ethernet 1</td>
+<td>-</td>
+<td>-</td>
+<td>fa0/5</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Nb1-VM</strong></td>
+<td>Notebook</td>
+<td>Wi0</td>
+<td>DHCP (+.10)</td>
+<td>10.1.4.0/24</td>
+<td>*Wi del WRT300N</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Tb1-VM</strong></td>
+<td>Tablet</td>
+<td>Wi0</td>
+<td>DHCP (+.10)</td>
+<td>10.1.4.0/24</td>
+<td>*Wi del WRT300N</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>DHCP-SV-VM</strong></td>
+<td>Server</td>
+<td>Fa0</td>
+<td>10.1.2.2/24</td>
+<td>10.1.2.0/24</td>
+<td>fa0/20</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>DHCP-SV-VM</strong></td>
+<td>Server</td>
+<td>Fa1</td>
+<td>10.1.3.2/24</td>
+<td>10.1.3.0/24</td>
+<td>fa0/23</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always"></div>
+<h3 id="bariloche">Bariloche</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Nombre</strong></th>
+<th><strong>Modelo</strong></th>
+<th><strong>Interfaz</strong></th>
+<th><strong>Dirección IP</strong></th>
+<th><strong>Dirección de Red</strong></th>
+<th><strong>Puerto del Switch</strong></th>
+<th><strong>VLAN</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RBR</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.2</td>
+<td>10.2.2.1/24</td>
+<td>10.2.2.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>2 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>RBR</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.3</td>
+<td>10.2.3.1/24</td>
+<td>10.2.3.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>3 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>RBR</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.4</td>
+<td>10.2.4.1/24</td>
+<td>10.2.4.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>4 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>PC1-BR</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.2.0/24</td>
+<td>fa0/1 (ACCESS)</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PC2-BR</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.2.0/24</td>
+<td>fa0/2 (ACCESS)</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PC3-BR</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.3.0/24</td>
+<td>fa0/3 (ACCESS)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>Pr1-BR</strong></td>
+<td>Printer</td>
+<td>Fa0</td>
+<td>10.2.3.3/24</td>
+<td>10.2.3.0/24</td>
+<td>fa0/4 (ACCESS)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>WiFi-BR</strong></td>
+<td>WRT-300N</td>
+<td>Ethernet 1</td>
+<td>-</td>
+<td>-</td>
+<td>fa0/5</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Nb1-BR</strong></td>
+<td>Notebook</td>
+<td>Wi0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.4.0/24</td>
+<td>*Wi del WRT300N</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Tb1-BR</strong></td>
+<td>Tablet</td>
+<td>Wi0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.4.0/24</td>
+<td>*Wi del WRT300N</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always"></div>
+<h3 id="mendoza">Mendoza</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Nombre</strong></th>
+<th><strong>Modelo</strong></th>
+<th><strong>Interfaz</strong></th>
+<th><strong>Dirección IP</strong></th>
+<th><strong>Dirección de Red</strong></th>
+<th><strong>Puerto del Switch</strong></th>
+<th><strong>VLAN</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RMZ</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.2</td>
+<td>10.2.2.1/24</td>
+<td>10.2.2.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>2 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>RMZ</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.3</td>
+<td>10.2.3.1/24</td>
+<td>10.2.3.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>3 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>RMZ</strong></td>
+<td>ISR4331</td>
+<td>g0/0/0.4</td>
+<td>10.2.4.1/24</td>
+<td>10.2.4.0/24</td>
+<td>g0/0 (TRUNK)</td>
+<td>4 (tag .1q)</td>
+</tr>
+<tr>
+<td><strong>PC1-MZ</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.2.0/24</td>
+<td>fa0/1 (ACCESS)</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PC2-MZ</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.2.0/24</td>
+<td>fa0/2 (ACCESS)</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PC3-MZ</strong></td>
+<td>PC</td>
+<td>Fa0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.3.0/24</td>
+<td>fa0/3 (ACCESS)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>Pr1-MZ</strong></td>
+<td>Printer</td>
+<td>Fa0</td>
+<td>10.2.3.3/24</td>
+<td>10.2.3.0/24</td>
+<td>fa0/4 (ACCESS)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>WiFi-MZ</strong></td>
+<td>WRT-300N</td>
+<td>Ethernet 1</td>
+<td>-</td>
+<td>-</td>
+<td>fa0/5</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Nb1-MZ</strong></td>
+<td>Notebook</td>
+<td>Wi0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.4.0/24</td>
+<td>*Wi del WRT300N</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Tb1-MZ</strong></td>
+<td>Tablet</td>
+<td>Wi0</td>
+<td>DHCP (+.10)</td>
+<td>10.2.4.0/24</td>
+<td>*Wi del WRT300N</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>SV-DHCP-VL2-MZ</strong></td>
+<td>Server</td>
+<td>Fa0</td>
+<td>10.3.2.2/24</td>
+<td>10.3.2.0/24</td>
+<td>fa0/12</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>SV-DHCP-VL3-MZ</strong></td>
+<td>Server</td>
+<td>Fa0</td>
+<td>10.3.3.2/24</td>
+<td>10.3.3.0/24</td>
+<td>fa0/13</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>SV-DHCP-VL4-MZ</strong></td>
+<td>Server</td>
+<td>Fa0</td>
+<td>10.3.4.2/24</td>
+<td>10.3.4.0/24</td>
+<td>fa0/14</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always"></div>
+<h1 id="configuraci%C3%B3n-de-protocolo-din%C3%A1mico-de-enrutamiento">Configuración de protocolo dinámico de enrutamiento</h1>
+<p>Por último, para permitir la conectividad entre las redes de las 3 ciudades, los routers deben informar sobre las redes directamente conectadas a los mismos a los demás routers, para esto utilizamos el protocolo RIP (Routing Information Protocol).</p>
+<p>La configuración de RIP en la CLI de Cisco se da con los siguientes comandos:</p>
+<ul>
+<li>router rip: para ingresar a la configuración del protocolo en el router</li>
+<li>version 2: para especificar que queremos utilizar RIPv2, ya que RIPv1 no soporta CIDR, y las redes que utilizamos en el laboratorio son todas CIDR. (Clase A con máscara 24)</li>
+<li>no auto-summary: para evitar la sumarización de rutas a la hora de enviar RIP updates. (si no se desactiva podría generar conflictos ya que se podrían sumarizar todas las rutas como una única ruta de clase A con máscara 24)</li>
+<li>network A.B.C.D: este comando se utiliza para especificar en que interfaces del router queremos activar RIP para informar de sus redes a los demás vecinos. La dirección que se especifica en este comando es classfull, lo que significa que se aplica el and lógico con la máscara por defecto de la clase a la que pertenece la dirección, y todas las redes que caigan en ese rango serán informadas.</li>
+</ul>
+<p>Por lo tanto la configuración en los 3 routers es la siguiente:</p>
+<pre class="hljs"><code><div>router rip
+ version 2
+ network 10.0.0.0
+ no auto-summary
+!
+</div></code></pre>
+<div style="page-break-after: always"></div>
+<p>Resultando en:</p>
+<blockquote>
+<p><em><strong>Villa María</strong></em>: <br/>
+Información de RIP: <br/>
+<img src="./rip_vm.png" alt="rip_vm"> <br/>
+Tabla de enrutamiento: <br/>
+<img src="./rt_vm.png" alt="rt_vm"> <br/>
+<em><strong>Bariloche</strong></em>: <br/>
+Información de RIP: <br/>
+<img src="./rip_br.png" alt="rip_br"> <br/>
+Tabla de enrutamiento: <br/>
+<img src="./rt_br.png" alt="rt_br"> <br/>
+<em><strong>Mendoza</strong></em>: <br/>
+Información de RIP: <br/>
+<img src="./rip_mz.png" alt="rip_mz"> <br/>
+Tabla de enrutamiento: <br/>
+<img src="./rt_mz.png" alt="rt_mz"> <br/></p>
+</blockquote>
+<p>Como se puede ver, cada router compartió su tabla de enrutamiento con los demás y todos los routers aprendieron todas las rutas a todas las redes de la compañía.</p>
+<p>Con esta última configuración la conectividad es total.</p>
+<div style="page-break-after: always"></div>
+<h1 id="vista-l%C3%B3gica-total">Vista Lógica Total</h1>
+<p><img src="./full_logtop.png" alt="full_logtp"></p>
+
+</body>
+</html>
