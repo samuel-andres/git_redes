@@ -60,7 +60,7 @@ Cada uno de los routers fue conectado mediante un cable serial a la nube frame r
 Para que esto funcione tuvimos que también configurar los circuitos virtuales (PVCs) en la nube Frame Relay:
 > ***Circuitos virtuales*** <br/>
 > ![fr_pvcs](./fr_pvcs.png)
-
+ 
 La configuración de las interfaces seriales involucradas en cada uno de los routers fueron las siguientes:
 > RVM:
 > ``` code
