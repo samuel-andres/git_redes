@@ -47,6 +47,7 @@
         - [Unidad de transferencia máxima (MTU)](#unidad-de-transferencia-máxima-mtu)
         - [Campos relacionados con la fragmentación](#campos-relacionados-con-la-fragmentación)
       - [Opciones](#opciones)
+    - [Direcciones IPv4](#direcciones-ipv4)
 
 # Aspectos Generales L3
 
@@ -541,6 +542,8 @@ IPv4 es también un protocolo no orientado a conexión para una red de conmutaci
 
 Los paquetes en IPv4 se denominan datagramas. 
 
+![ipv4_header](./ipv4header.png)
+
 Un datagrama es un paquete de longitud variable que consta de dos partes: cabecera y datos. La cabecera tiene de 20 a 60 bytes de longitud y contiene información esencial para el encaminamiento y la entrega. En TCP/IP se muestra la cebecera en secciones de 4 bytes. 
 
 A continuación se hace una descripción de cada campo en orden.
@@ -626,3 +629,6 @@ Las opciones, como su nombre implica, no son requeridas para un datagrama. Se pu
 - *Camino estricto desde el origen*: este campo lo utiliza el origen para predeterminar un camino para el viaje del datagrama a través de Internet. Esta característica puede ser útil para varias cosas. El emisor puede elegir un camino con un tipo específico	de servicio, como retardo mínimo o máxima productividad. De igual forma, puede elegir un camino que sea más seguro o más fiable. Por ejemplo, un emisor puede elegir un camino para que el datagrama no viaje por la red de un competidor. Si un datagrama especifica una ruta desde el origen, todos los encaminadores definidos en la opción deben ser visitados por el datagrama. Un encaminador no debe ser visitado si su dirección IPv4 no se encuentra listada en el datagrama. Si el datagrama visita un encaminador que no se encuentra en la lista, el datagrama se descarta y se envía un mensaje de error. Si el datagrama llega al destino y algunas entradas no fueron visitadas, también será descartado y enviado el mensaje de error.
 - *Camino relajado desde el origen*:  este campo es similar al anterior, pero es menos rígido. Cada encaminador de la lista debe ser visitado, pero el datagrama puede visitar también otros encaminadores.
 - *Marca de tiempo*: la marca de tiempo se utiliza para registrar la hora de procesamiento de un encaminador. Este tiempo se expresa en milisegundos desde la media noche utilizando el tiempo Universal o de Greenwich. Saber la hora a la que se procesa un datagrama puede ayudar a los usuarios y administradores a conocer el funcionamiento de los encaminadores en Internet. Se puede estimar el tiempo que tarda un datagrama en ir de un encaminador al otro. Se dice estimar, debido a que todos los encaminadores pueden utilizar tiempo Universal, sus relojes locales pueden estar desincronizados.
+
+### Direcciones IPv4
+

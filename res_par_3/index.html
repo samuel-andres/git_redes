@@ -455,6 +455,7 @@ code {
 <li><a href="#opciones">Opciones</a></li>
 </ul>
 </li>
+<li><a href="#direcciones-ipv4">Direcciones IPv4</a></li>
 </ul>
 </li>
 </ul>
@@ -997,6 +998,7 @@ En EIGRP y OSPF cada Router tiene un identificador único que lo identifica en e
 <p>IPv4 es también un protocolo no orientado a conexión para una red de conmutación de paquetes que utiliza datagramas. Esto significa que cada datagrama se trata de forma independiente y cada datagrama puede seguir un camino diferente hasta el destino. Esto implica que los datagramas enviados por el mismo origen al mismo destino pueden llegar desordenados. También, algunos pueden perderse o dañarse durante la transmisión. De nuevo, IPv4 depende de un protocolo de nivel superior que se preocupe de estos problemas.</p>
 <h3 id="datagrama">Datagrama</h3>
 <p>Los paquetes en IPv4 se denominan datagramas.</p>
+<p><img src="./ipv4header.png" alt="ipv4_header"></p>
 <p>Un datagrama es un paquete de longitud variable que consta de dos partes: cabecera y datos. La cabecera tiene de 20 a 60 bytes de longitud y contiene información esencial para el encaminamiento y la entrega. En TCP/IP se muestra la cebecera en secciones de 4 bytes.</p>
 <p>A continuación se hace una descripción de cada campo en orden.</p>
 <p><img src="./datagrama_format.png" alt="datagrama_format"></p>
@@ -1106,6 +1108,7 @@ Este campo es necesario debido a que las tablas de encaminamiento en Internet se
 <li><em>Camino relajado desde el origen</em>:  este campo es similar al anterior, pero es menos rígido. Cada encaminador de la lista debe ser visitado, pero el datagrama puede visitar también otros encaminadores.</li>
 <li><em>Marca de tiempo</em>: la marca de tiempo se utiliza para registrar la hora de procesamiento de un encaminador. Este tiempo se expresa en milisegundos desde la media noche utilizando el tiempo Universal o de Greenwich. Saber la hora a la que se procesa un datagrama puede ayudar a los usuarios y administradores a conocer el funcionamiento de los encaminadores en Internet. Se puede estimar el tiempo que tarda un datagrama en ir de un encaminador al otro. Se dice estimar, debido a que todos los encaminadores pueden utilizar tiempo Universal, sus relojes locales pueden estar desincronizados.</li>
 </ul>
+<h3 id="direcciones-ipv4">Direcciones IPv4</h3>
 
 </body>
 </html>
